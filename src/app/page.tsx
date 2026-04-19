@@ -1,6 +1,5 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import SplashSection from "@/components/sections/SplashSection";
 import HeroSection from "@/components/sections/HeroSection";
 import BusSection from "@/components/sections/BusSection";
 import MapSection from "@/components/sections/MapSection";
@@ -21,7 +20,6 @@ export default function Home() {
       <Header />
       <main>
         <HeroSection />
-        <SplashSection />
         <BusSection />
         <MapSection />
         <BuildingSection />

@@ -21,6 +21,7 @@
   font-display: swap;
 }
 
+
 @theme inline {
   /* Colors - Brand (deep forest green — single source of truth for all greens) */
   --color-brand: #1f3d2e;
@@ -46,8 +47,8 @@
   --color-background: #ffffff;
   --color-foreground: #191F28;
 
-  /* Font */
-  --font-sans: "WantedSans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Font — WantedSans for Latin/Hangul, Tossface for emojis (loaded via layout.tsx link) */
+  --font-sans: "WantedSans", "Tossface", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Font Size (SDS Typography) */
   --font-size-t1: 30px;

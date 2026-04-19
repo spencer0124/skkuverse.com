@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import InAppEscape from "@/components/ui/InAppEscape";
-import AppBanner from "@/components/ui/AppBanner";
 
 export const metadata: Metadata = {
   title: "스꾸버스 - 성대생이 만드는 캠퍼스",
@@ -27,9 +26,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="h-full antialiased">
+      <head>
+        <link
+          rel="preconnect"
+          href="https://cdn.jsdelivr.net"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/toss/tossface/dist/tossface.css"
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans">
         <InAppEscape />
-        <AppBanner />
         {children}
       </body>
     </html>
