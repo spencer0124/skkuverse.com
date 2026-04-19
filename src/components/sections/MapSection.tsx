@@ -87,7 +87,7 @@ export default function MapSection() {
 
           <AnimatedReveal delay={0.2} className="order-1 md:order-2">
             <PhoneMockup>
-              <div className="w-full h-full bg-[#F0F4F0] p-0 pt-8">
+              <div className="w-full h-full bg-brand-light p-0 pt-8">
                 {/* Map UI mockup */}
                 <div className="px-4 mb-3">
                   <div className="bg-white rounded-xl px-3 py-2.5 shadow-[0_1px_4px_rgba(0,0,0,0.08)] flex items-center gap-2">
@@ -109,7 +109,7 @@ export default function MapSection() {
                 </div>
 
                 {/* Simplified map area */}
-                <div className="relative flex-1 bg-[#E8EDE8] mx-2 rounded-t-xl p-3 min-h-[260px]">
+                <div className="relative flex-1 bg-[color-mix(in_srgb,var(--color-brand)_8%,white)] mx-2 rounded-t-xl p-3 min-h-[260px]">
                   {/* Map markers */}
                   <div className="absolute top-[20%] left-[30%] flex flex-col items-center">
                     <div className="bg-brand text-white text-[8px] font-bold px-1.5 py-0.5 rounded-md">

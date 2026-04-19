@@ -1,18 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Button from "@/components/ui/Button";
-import LogoMark from "@/components/ui/LogoMark";
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-brand-light via-white to-grey-50">
-      {/* Background decorative circles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-brand/5" />
-        <div className="absolute -bottom-48 -left-48 w-[600px] h-[600px] rounded-full bg-brand/3" />
-      </div>
-
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
       <div className="relative z-10 mx-auto max-w-[1140px] px-6 text-center pt-24 pb-20">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -20,11 +14,19 @@ export default function HeroSection() {
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
           className="flex justify-center mb-6"
         >
-          <LogoMark className="w-16 h-16 md:w-20 md:h-20 text-brand" />
+          <Image
+            src="/logo.svg"
+            alt="스꾸버스 로고"
+            width={80}
+            height={80}
+            className="w-16 h-16 md:w-20 md:h-20 rounded-2xl shadow-[0_6px_20px_rgba(31,61,46,0.25)]"
+            unoptimized
+            priority
+          />
         </motion.div>
 
         <motion.h1
-          className="text-t1 md:text-hero font-bold text-grey-900 leading-tight"
+          className="text-t1 md:text-[56px] lg:text-[72px] font-bold text-grey-900 leading-[1.1] tracking-tight"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{

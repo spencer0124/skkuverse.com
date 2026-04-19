@@ -27,7 +27,6 @@ export default function BuildingSection() {
           label="건물 상세정보"
           title={"12개 건물, 층별로\n꼼꼼하게 안내해요"}
           description="인사캠 주요 건물의 층별 시설, 강의실, 편의시설 정보를 한 곳에서 확인하세요."
-          titleColor="#1A8A5C"
         />
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">

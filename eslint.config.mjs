@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Design references (React Native source + JSX draft for the splash anim):
+    "docs/**",
   ]),
 ]);
 
