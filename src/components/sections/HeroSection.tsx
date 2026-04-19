@@ -20,7 +20,7 @@ const GREEN_TAGLINE = "color-mix(in srgb, var(--color-brand) 45%, transparent)";
 // + Next 16 (see motion/motion#1872). Instead, useMotionValueEvent subscribes to
 // scrollYProgress and directly writes to `ref.current.style.opacity` / `.transform`.
 //
-// 0.00 → 0.18 : Hero state fade-out (subhead + button + chevron)
+// 0.00 → 0.18 : Button + chevron fade-out (subhead stays persistent)
 // 0.22 → 0.44 : SPLIT (스꾸 ← -1em, 버스 → +1em)
 // 0.30 → 0.48 : 유니 reveal (opacity + y slide up + scale)
 // 0.52 → 0.66 : Accent line
@@ -39,22 +39,18 @@ export default function HeroSection() {
   const leftX = useTransform(scrollYProgress, [0.22, 0.44], ["0em", "-1em"]);
   const rightX = useTransform(scrollYProgress, [0.22, 0.44], ["0em", "1em"]);
 
-  // Refs for direct DOM manipulation (bypass stuck-opacity bug)
-  const subheadRef = useRef<HTMLDivElement>(null);
+  // Refs for direct DOM manipulation (bypass stuck-opacity bug).
+  // Subhead stays visible through the whole scroll — only button + chevron fade.
   const buttonRef = useRef<HTMLDivElement>(null);
   const chevronRef = useRef<HTMLDivElement>(null);
   const uniRef = useRef<HTMLSpanElement>(null);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // 1) Hero state fade-out over [0, 0.18]
+    // 1) Button + chevron fade over [0, 0.18]
     const heroP = Math.max(0, Math.min(1, latest / 0.18));
     const heroOpacity = String(1 - heroP);
     const heroTransform = `translateY(${-heroP * 24}px)`;
 
-    if (subheadRef.current) {
-      subheadRef.current.style.opacity = heroOpacity;
-      subheadRef.current.style.transform = heroTransform;
-    }
     if (buttonRef.current) {
       buttonRef.current.style.opacity = heroOpacity;
       buttonRef.current.style.transform = heroTransform;
@@ -105,12 +101,8 @@ export default function HeroSection() {
             }}
           />
 
-          {/* Subhead — Hero only, fades first (placed ABOVE wordmark per request) */}
-          <div
-            ref={subheadRef}
-            className="relative z-10 text-[44px] md:text-[80px] lg:text-[104px] font-bold text-grey-900 leading-[1.2] tracking-[-0.03em]"
-            style={{ opacity: 1, transform: "translateY(0px)" }}
-          >
+          {/* Subhead — persistent; placed above the wordmark */}
+          <div className="relative z-10 text-[44px] md:text-[80px] lg:text-[104px] font-bold text-grey-900 leading-[1.2] tracking-[-0.03em]">
             성대생이 만드는 캠퍼스
           </div>
 
