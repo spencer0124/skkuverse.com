@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/cn";
-import LogoMark from "@/components/ui/LogoMark";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -25,7 +25,15 @@ export default function Header() {
     >
       <div className="mx-auto max-w-[1140px] px-6 flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-2">
-          <LogoMark className="w-7 h-7 text-brand" />
+          <Image
+            src="/logo.svg"
+            alt="스꾸버스 로고"
+            width={28}
+            height={28}
+            className="w-7 h-7 rounded-lg"
+            unoptimized
+            priority
+          />
           <span className="text-t4 font-bold text-grey-900">스꾸버스</span>
         </Link>
         <nav className="hidden md:flex items-center gap-8">

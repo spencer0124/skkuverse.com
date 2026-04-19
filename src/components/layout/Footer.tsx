@@ -1,4 +1,4 @@
-import LogoMark from "@/components/ui/LogoMark";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -7,7 +7,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-3">
-              <LogoMark className="w-7 h-7 text-brand" />
+              <Image
+                src="/logo.svg"
+                alt="스꾸버스 로고"
+                width={28}
+                height={28}
+                className="w-7 h-7 rounded-lg"
+                unoptimized
+              />
               <h3 className="text-t4 font-bold text-grey-900">스꾸버스</h3>
             </div>
             <p className="text-t6 text-grey-500 leading-relaxed">

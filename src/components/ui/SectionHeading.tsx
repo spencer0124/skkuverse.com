@@ -5,7 +5,6 @@ interface SectionHeadingProps {
   title: string;
   description?: string;
   align?: "center" | "left";
-  titleColor?: string;
 }
 
 export default function SectionHeading({
@@ -13,7 +12,6 @@ export default function SectionHeading({
   title,
   description,
   align = "center",
-  titleColor,
 }: SectionHeadingProps) {
   const alignClass = align === "center" ? "text-center" : "text-left";
 
@@ -25,10 +23,7 @@ export default function SectionHeading({
         </AnimatedReveal>
       )}
       <AnimatedReveal delay={0.1}>
-        <h2
-          className="text-t2 md:text-display font-bold text-grey-900 whitespace-pre-line"
-          style={titleColor ? { color: titleColor } : undefined}
-        >
+        <h2 className="text-t2 md:text-display font-bold text-grey-900 whitespace-pre-line tracking-tight">
           {title}
         </h2>
       </AnimatedReveal>
