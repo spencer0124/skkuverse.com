@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
+import LogoMark from "@/components/ui/LogoMark";
 
 export default function HeroSection() {
   return (
@@ -17,10 +18,9 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          className="flex justify-center mb-6"
         >
-          <p className="text-t5 font-bold text-brand mb-6">
-            성균관대 캠퍼스 슈퍼앱
-          </p>
+          <LogoMark className="w-16 h-16 md:w-20 md:h-20 text-brand" />
         </motion.div>
 
         <motion.h1
@@ -33,9 +33,9 @@ export default function HeroSection() {
             ease: [0.25, 0.1, 0.25, 1],
           }}
         >
-          셔틀버스부터 캠퍼스 맵까지,
+          <span className="text-brand">스꾸버스</span>
           <br />
-          <span className="text-brand">하나의 앱</span>으로
+          성대생이 만드는 캠퍼스
         </motion.h1>
 
         <motion.p
@@ -48,11 +48,7 @@ export default function HeroSection() {
             ease: [0.25, 0.1, 0.25, 1],
           }}
         >
-          실시간 버스 위치, 건물 층별 안내, 캠퍼스 지도.
-          <br />
-          인사캠과 자과캠, 두 캠퍼스 생활을
-          <br />
-          스꾸버스 하나로 시작하세요.
+          오늘의 공지·셔틀·장소, 성대생이 함께
         </motion.p>
 
         <motion.div

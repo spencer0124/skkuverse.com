@@ -1,14 +1,17 @@
+import LogoMark from "@/components/ui/LogoMark";
+
 export default function Footer() {
   return (
     <footer className="bg-grey-100 py-16">
       <div className="mx-auto max-w-[1140px] px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-2">
-            <h3 className="text-t4 font-bold text-grey-900 mb-3">스꾸버스</h3>
+            <div className="flex items-center gap-2 mb-3">
+              <LogoMark className="w-7 h-7 text-brand" />
+              <h3 className="text-t4 font-bold text-grey-900">스꾸버스</h3>
+            </div>
             <p className="text-t6 text-grey-500 leading-relaxed">
-              성균관대 캠퍼스 생활을
-              <br />
-              하나의 앱으로 시작하세요.
+              오늘의 공지·셔틀·장소, 성대생이 함께
             </p>
           </div>
           <div>

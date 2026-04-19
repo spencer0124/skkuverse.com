@@ -4,13 +4,11 @@ import InAppEscape from "@/components/ui/InAppEscape";
 import AppBanner from "@/components/ui/AppBanner";
 
 export const metadata: Metadata = {
-  title: "스꾸버스 - 성균관대 캠퍼스 생활의 모든 것",
-  description:
-    "시간표, 학식, 셔틀버스, 커뮤니티까지. 성균관대 캠퍼스 생활을 하나의 앱으로 시작하세요.",
+  title: "스꾸버스 - 성대생이 만드는 캠퍼스",
+  description: "오늘의 공지·셔틀·장소, 성대생이 함께",
   openGraph: {
-    title: "스꾸버스 - 성균관대 캠퍼스 생활의 모든 것",
-    description:
-      "시간표, 학식, 셔틀버스, 커뮤니티까지. 성균관대 캠퍼스 생활을 하나의 앱으로 시작하세요.",
+    title: "스꾸버스 - 성대생이 만드는 캠퍼스",
+    description: "오늘의 공지·셔틀·장소, 성대생이 함께",
     type: "website",
   },
   other: {

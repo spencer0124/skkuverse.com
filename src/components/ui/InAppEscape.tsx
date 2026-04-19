@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
+import LogoMark from "@/components/ui/LogoMark";
 
 const INAPP_REGEX =
   /KAKAOTALK|kakaotalk|line\/|NAVER\(inapp|snapchat|instagram|everytimeapp|whatsApp|wadiz|FB_IAB|FB4A|FBAN|FBIOS|FBSS|DaumApps|kakaostory|band|twitter|TikTok/i;
@@ -96,7 +97,7 @@ export default function InAppEscape() {
   return (
     <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center px-8">
       <div className="w-16 h-16 rounded-2xl bg-brand flex items-center justify-center mb-6">
-        <span className="text-white text-t2 font-bold">스</span>
+        <LogoMark className="w-10 h-10 text-white" />
       </div>
 
       <h2 className="text-t3 font-bold text-grey-900 text-center mb-3">

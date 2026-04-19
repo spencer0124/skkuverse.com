@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
+import LogoMark from "@/components/ui/LogoMark";
 
 const INAPP_REGEX =
   /KAKAOTALK|kakaotalk|line\/|NAVER\(inapp|snapchat|instagram|everytimeapp|whatsApp|wadiz|FB_IAB|FB4A|FBAN|FBIOS|FBSS|DaumApps|kakaostory|band|twitter|TikTok/i;
@@ -65,7 +66,7 @@ export default function AppBanner() {
       <div className="mx-auto max-w-[1140px] px-4 py-3 flex items-center gap-3">
         {/* App icon */}
         <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-brand flex items-center justify-center">
-          <span className="text-white text-t6 font-bold">스</span>
+          <LogoMark className="w-6 h-6 text-white" />
         </div>
 
         {/* Text */}
