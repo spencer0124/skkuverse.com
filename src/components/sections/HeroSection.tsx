@@ -40,24 +40,16 @@ export default function HeroSection() {
   const rightX = useTransform(scrollYProgress, [0.22, 0.44], ["0em", "1em"]);
 
   // Refs for direct DOM manipulation (bypass stuck-opacity bug).
-  // Subhead stays visible through the whole scroll — only button + chevron fade.
+  // Subhead + chevron stay visible through the whole scroll. Only button fades.
   const buttonRef = useRef<HTMLDivElement>(null);
-  const chevronRef = useRef<HTMLDivElement>(null);
   const uniRef = useRef<HTMLSpanElement>(null);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // 1) Button + chevron fade over [0, 0.18]
+    // 1) Button fade over [0, 0.18]
     const heroP = Math.max(0, Math.min(1, latest / 0.18));
-    const heroOpacity = String(1 - heroP);
-    const heroTransform = `translateY(${-heroP * 24}px)`;
-
     if (buttonRef.current) {
-      buttonRef.current.style.opacity = heroOpacity;
-      buttonRef.current.style.transform = heroTransform;
-    }
-    if (chevronRef.current) {
-      // Chevron only gets opacity (transform belongs to the inner bounce motion.div)
-      chevronRef.current.style.opacity = heroOpacity;
+      buttonRef.current.style.opacity = String(1 - heroP);
+      buttonRef.current.style.transform = `translateY(${-heroP * 24}px)`;
     }
 
     // 2) 유니 reveal over [0.30, 0.48]
@@ -179,11 +171,9 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Scroll indicator — outer div opacity via ref, inner motion.div for bounce */}
+        {/* Scroll indicator — stays visible through entire pin phase */}
         <div
-          ref={chevronRef}
           className="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 text-grey-500 z-20 pointer-events-none"
-          style={{ opacity: 1 }}
           aria-hidden
         >
           <motion.div
