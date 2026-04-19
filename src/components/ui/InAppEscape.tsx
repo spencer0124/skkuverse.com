@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
-import LogoMark from "@/components/ui/LogoMark";
+import Image from "next/image";
 
 const INAPP_REGEX =
   /KAKAOTALK|kakaotalk|line\/|NAVER\(inapp|snapchat|instagram|everytimeapp|whatsApp|wadiz|FB_IAB|FB4A|FBAN|FBIOS|FBSS|DaumApps|kakaostory|band|twitter|TikTok/i;
@@ -96,9 +96,14 @@ export default function InAppEscape() {
   // iOS 수동 탈출 안내 화면 — 진입 시 optimistic하게 복사 완료 UI 표시
   return (
     <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center px-8">
-      <div className="w-16 h-16 rounded-2xl bg-brand flex items-center justify-center mb-6">
-        <LogoMark className="w-10 h-10 text-white" />
-      </div>
+      <Image
+        src="/logo.svg"
+        alt="스꾸버스 로고"
+        width={64}
+        height={64}
+        className="w-16 h-16 rounded-2xl mb-6"
+        unoptimized
+      />
 
       <h2 className="text-t3 font-bold text-grey-900 text-center mb-3">
         Safari에서 열어주세요

@@ -22,9 +22,9 @@
 }
 
 @theme inline {
-  /* Colors - Brand */
-  --color-brand: #1A8A5C;
-  --color-brand-light: #E8F5EE;
+  /* Colors - Brand (deep forest green — single source of truth for all greens) */
+  --color-brand: #1f3d2e;
+  --color-brand-light: #E9EDEA;
 
   /* Colors - Grey Scale */
   --color-grey-50: #F9FAFB;
