@@ -1,29 +1,48 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
 const INAPP_REGEX =
   /KAKAOTALK|kakaotalk|line\/|NAVER\(inapp|snapchat|instagram|everytimeapp|whatsApp|wadiz|FB_IAB|FB4A|FBAN|FBIOS|FBSS|DaumApps|kakaostory|band|twitter|TikTok/i;
 
-type EscapeState = "idle" | "redirecting" | "manual";
+type EscapeKind = "idle" | "kakao" | "line" | "android" | "manual-ios";
+type EscapeConfig = { kind: EscapeKind; isIOS: boolean };
+
+const IDLE: EscapeConfig = { kind: "idle", isIOS: false };
+
+function classify(ua: string): EscapeConfig {
+  if (!INAPP_REGEX.test(ua)) return IDLE;
+  const isIOS = /iPhone|iPad|iPod/.test(ua);
+  if (/KAKAOTALK|kakaotalk/i.test(ua)) return { kind: "kakao", isIOS };
+  if (/line\//i.test(ua)) return { kind: "line", isIOS };
+  if (/Android/i.test(ua)) return { kind: "android", isIOS };
+  if (isIOS) return { kind: "manual-ios", isIOS };
+  return IDLE;
+}
+
+// Stable identity required by useSyncExternalStore — cache per-tab.
+let clientSnapshot: EscapeConfig | undefined;
+function getClientSnapshot(): EscapeConfig {
+  clientSnapshot ??= classify(navigator.userAgent);
+  return clientSnapshot;
+}
+const getServerSnapshot = () => IDLE;
+const subscribe = () => () => {};
 
 export default function InAppEscape() {
-  const [state, setState] = useState<EscapeState>("idle");
-  const [copied, setCopied] = useState(false);
+  const { kind, isIOS } = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot
+  );
 
   useEffect(() => {
-    const ua = navigator.userAgent;
-    if (!INAPP_REGEX.test(ua)) return;
-
+    if (kind === "idle") return;
     const currentUrl = location.href;
-    const isIOS = /iPhone|iPad|iPod/.test(ua);
 
-    // 카카오톡
-    if (/KAKAOTALK|kakaotalk/i.test(ua)) {
-      setState("redirecting");
+    if (kind === "kakao") {
       location.href =
         "kakaotalk://web/openExternal?url=" + encodeURIComponent(currentUrl);
-
       setTimeout(() => {
         location.href = isIOS
           ? "kakaoweb://closeBrowser"
@@ -32,26 +51,19 @@ export default function InAppEscape() {
       return;
     }
 
-    // Line
-    if (/line\//i.test(ua)) {
-      setState("redirecting");
+    if (kind === "line") {
       const separator = currentUrl.includes("?") ? "&" : "?";
       location.href = currentUrl + separator + "openExternalBrowser=1";
       return;
     }
 
-    // Android 기타 인앱 → intent로 시스템 기본 브라우저
-    if (/Android/i.test(ua)) {
-      setState("redirecting");
+    if (kind === "android") {
       const intentUrl = currentUrl.replace(/https?:\/\//i, "");
       location.href = `intent://${intentUrl}#Intent;scheme=https;end`;
       return;
     }
 
-    // iOS 기타 인앱 (에브리타임, 인스타, 네이버 등)
-    // → 자동 탈출 불가, 클립보드 복사 + Safari 안내
-    if (isIOS) {
-      setState("manual");
+    if (kind === "manual-ios") {
       navigator.clipboard.writeText(currentUrl).catch(() => {
         // clipboard API 실패 시 fallback
         const textarea = document.createElement("textarea");
@@ -63,14 +75,13 @@ export default function InAppEscape() {
         document.execCommand("copy");
         document.body.removeChild(textarea);
       });
-      setCopied(true);
     }
-  }, []);
+  }, [kind, isIOS]);
 
-  if (state === "idle") return null;
+  if (kind === "idle") return null;
 
   // 자동 탈출 중 로딩 화면
-  if (state === "redirecting") {
+  if (kind !== "manual-ios") {
     return (
       <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center gap-4">
         <div className="w-10 h-10 border-3 border-brand border-t-transparent rounded-full animate-spin" />
@@ -81,7 +92,7 @@ export default function InAppEscape() {
     );
   }
 
-  // iOS 수동 탈출 안내 화면
+  // iOS 수동 탈출 안내 화면 — 진입 시 optimistic하게 복사 완료 UI 표시
   return (
     <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center px-8">
       <div className="w-16 h-16 rounded-2xl bg-brand flex items-center justify-center mb-6">
@@ -105,13 +116,7 @@ export default function InAppEscape() {
               1
             </span>
             <p className="text-t6 text-grey-700 pt-0.5">
-              {copied ? (
-                <>
-                  주소가 <span className="font-bold text-brand">복사되었어요</span>
-                </>
-              ) : (
-                "아래 버튼을 눌러 주소를 복사하세요"
-              )}
+              주소가 <span className="font-bold text-brand">복사되었어요</span>
             </p>
           </div>
           <div className="flex items-start gap-3">
@@ -126,28 +131,14 @@ export default function InAppEscape() {
           </div>
         </div>
 
-        {!copied && (
-          <button
-            onClick={() => {
-              navigator.clipboard.writeText(location.href).catch(() => {});
-              setCopied(true);
-            }}
-            className="w-full bg-brand text-white text-t5 font-bold py-4 rounded-2xl"
-          >
-            주소 복사하기
-          </button>
-        )}
-
-        {copied && (
-          <button
-            onClick={() => {
-              location.href = "x-web-search://?";
-            }}
-            className="w-full bg-brand text-white text-t5 font-bold py-4 rounded-2xl"
-          >
-            Safari 열기
-          </button>
-        )}
+        <button
+          onClick={() => {
+            location.href = "x-web-search://?";
+          }}
+          className="w-full bg-brand text-white text-t5 font-bold py-4 rounded-2xl"
+        >
+          Safari 열기
+        </button>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/cn";
 
 export default function Header() {
@@ -22,28 +23,28 @@ export default function Header() {
       )}
     >
       <div className="mx-auto max-w-[1140px] px-6 flex items-center justify-between h-16">
-        <a href="/" className="text-t4 font-bold text-grey-900">
+        <Link href="/" className="text-t4 font-bold text-grey-900">
           스꾸버스
-        </a>
+        </Link>
         <nav className="hidden md:flex items-center gap-8">
-          <a
+          <Link
             href="/#features"
             className="text-t6 font-medium text-grey-600 hover:text-grey-900 transition-colors"
           >
             기능 소개
-          </a>
-          <a
+          </Link>
+          <Link
             href="/#community"
             className="text-t6 font-medium text-grey-600 hover:text-grey-900 transition-colors"
           >
             커뮤니티
-          </a>
-          <a
+          </Link>
+          <Link
             href="/#download"
             className="text-t6 font-medium text-white bg-brand px-5 py-2.5 rounded-full hover:bg-brand/90 transition-colors"
           >
             앱 다운로드
-          </a>
+          </Link>
         </nav>
       </div>
     </header>
