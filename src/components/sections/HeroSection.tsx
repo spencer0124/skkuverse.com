@@ -62,27 +62,29 @@ export default function HeroSection() {
       <div
         className="sticky top-0 h-screen overflow-hidden"
         style={{
-          // Subtle brand-green ambient background — top bleeds into white at
-          // the bottom so the section dissolves into the next block.
+          // Top 64px (header bar height) stays pure white, then smoothly ramps
+          // into the brand tint peak around 25% before fading back to white.
           background: `linear-gradient(180deg,
-            color-mix(in srgb, var(--color-brand) 10%, white) 0%,
+            #ffffff 0%,
+            #ffffff 64px,
+            color-mix(in srgb, var(--color-brand) 10%, white) 25%,
             color-mix(in srgb, var(--color-brand) 4%, white) 55%,
             #ffffff 100%)`,
         }}
       >
         {/* Floating-emoji scene — stays at 100% opacity throughout. */}
         <HeroScene />
-        <div className="relative z-10 mx-auto max-w-[1140px] px-6 text-center pt-32 md:pt-40 pb-20 h-full flex flex-col items-center">
+        <div className="relative z-10 mx-auto max-w-[1140px] px-6 text-center pt-40 md:pt-52 pb-20 h-full flex flex-col items-center">
           {/* Subhead — persistent; placed above the wordmark */}
           <div className="relative z-10 text-[44px] md:text-[80px] lg:text-[104px] font-bold text-grey-900 leading-[1.2] tracking-[-0.03em]">
-            내 손 안에 성균관대
+            내 손 안에, 성균관대
           </div>
 
           {/* Wordmark row: each slot is inline-block sized to the INITIAL text's
               intrinsic width via a visibility:hidden spacer. The bigger texts
               (성균관/유니버스) are absolute children that overflow horizontally
               (clip-path opens left/right but masks top/bottom). */}
-          <div className="relative z-10 flex items-baseline justify-center gap-[0.25em] text-brand text-[44px] md:text-[80px] lg:text-[104px] font-bold tracking-[-0.03em]">
+          <div className="relative z-10 mt-2 md:mt-3 flex items-baseline justify-center gap-[0.25em] text-brand text-[44px] md:text-[80px] lg:text-[104px] font-bold tracking-[-0.03em]">
             {/* Left slot */}
             <motion.div
               className="relative inline-block text-center"

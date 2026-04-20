@@ -1,23 +1,19 @@
 import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import PrivacyContent from "@/components/privacy/PrivacyContent";
 
 export const metadata: Metadata = {
-  title: "개인정보처리방침",
-  description: "스꾸버스 개인정보처리방침",
+  title: "이용약관",
+  description: "스꾸버스 서비스 이용약관.",
 };
 
-export default function PrivacyPage() {
+export default function TermsPage() {
   return (
     <>
       <Header />
       <main className="pt-32 pb-24">
         <div className="mx-auto max-w-[800px] px-6">
-          <h1 className="text-display font-bold text-grey-900 mb-4">
-            개인정보처리방침
-          </h1>
-          <PrivacyContent />
+          <h1 className="text-display font-bold text-grey-900">이용약관</h1>
         </div>
       </main>
       <Footer />

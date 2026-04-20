@@ -1,11 +1,30 @@
 import Image from "next/image";
+import Link from "next/link";
+
+const productLinks = [
+  { href: "/bus", label: "셔틀버스" },
+  { href: "/notice", label: "AI 공지" },
+  { href: "/#download", label: "앱 다운로드" },
+];
+
+const companyLinks = [
+  { href: "/team", label: "팀 소개" },
+  { href: "/feed", label: "피드" },
+  { href: "/faq", label: "자주 묻는 질문" },
+  { href: "/support", label: "문의" },
+];
+
+const policyLinks = [
+  { href: "/terms", label: "이용약관" },
+  { href: "/privacy", label: "개인정보처리방침" },
+];
 
 export default function Footer() {
   return (
     <footer className="bg-grey-100 py-16">
       <div className="mx-auto max-w-[1140px] px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
+          <div className="col-span-2">
             <div className="flex items-center gap-2 mb-3">
               <Image
                 src="/logo.svg"
@@ -22,55 +41,55 @@ export default function Footer() {
             </p>
           </div>
           <div>
-            <h4 className="text-t6 font-bold text-grey-800 mb-4">서비스</h4>
+            <h4 className="text-t6 font-bold text-grey-800 mb-4">제품</h4>
             <ul className="space-y-3">
-              <li>
-                <a href="#" className="text-t6 text-grey-500 hover:text-grey-700 transition-colors">
-                  시간표
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-t6 text-grey-500 hover:text-grey-700 transition-colors">
-                  학식 메뉴
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-t6 text-grey-500 hover:text-grey-700 transition-colors">
-                  셔틀버스
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-t6 text-grey-500 hover:text-grey-700 transition-colors">
-                  커뮤니티
-                </a>
-              </li>
+              {productLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-t6 text-grey-500 hover:text-grey-700 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
-            <h4 className="text-t6 font-bold text-grey-800 mb-4">문의</h4>
+            <h4 className="text-t6 font-bold text-grey-800 mb-4">회사</h4>
             <ul className="space-y-3">
-              <li>
-                <a href="/support" className="text-t6 text-grey-500 hover:text-grey-700 transition-colors">
-                  문의하기
-                </a>
-              </li>
-              <li>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-t6 text-grey-500 hover:text-grey-700 transition-colors">
-                  인스타그램
-                </a>
-              </li>
+              {companyLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-t6 text-grey-500 hover:text-grey-700 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-t6 font-bold text-grey-800 mb-4">정책</h4>
+            <ul className="space-y-3">
+              {policyLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-t6 text-grey-500 hover:text-grey-700 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-grey-200">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <p className="text-t7 text-grey-400">
-              &copy; 2025 스꾸버스. All rights reserved.
-            </p>
-            <a href="/privacy" className="text-t7 text-grey-400 hover:text-grey-600 transition-colors">
-              개인정보처리방침
-            </a>
-          </div>
+          <p className="text-t7 text-grey-400">
+            &copy; 2026 스꾸버스. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
