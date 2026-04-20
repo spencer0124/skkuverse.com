@@ -15,18 +15,20 @@ const GREEN_TAGLINE = "color-mix(in srgb, var(--color-brand) 45%, transparent)";
 
 // Scroll choreography (scrollYProgress 0..1, over 30vh of pinned scroll in h-[130vh])
 //
-// All fade/opacity-critical elements bypass framer-motion MotionValue → style.opacity
-// because that path has a known stuck-opacity regression in framer-motion v12 + React 19
-// + Next 16 (see motion/motion#1872). Instead, useMotionValueEvent subscribes to
-// scrollYProgress and directly writes to `ref.current.style.opacity` / `.transform`.
+// Wordmark reveal = two side-by-side masked slots. Each slot is overflow:hidden
+// with height 1em and an inner 2-row stack. When the reveal progresses, the stack
+// slides up by 1em — old word (스꾸/버스) exits the top of the slot and new word
+// (성균관/유니버스) slides into place from below. The "white box" masking effect
+// is the slot's own overflow:hidden boundary.
 //
-// 0.00 → 0.18 : Button + chevron fade-out (subhead stays persistent)
-// 0.22 → 0.44 : SPLIT (스꾸 ← -1em, 버스 → +1em)
-// 0.30 → 0.48 : 유니 reveal (opacity + y slide up + scale)
-// 0.52 → 0.66 : Accent line
-// 0.64 → 0.76 : SKKUverse subtitle + radial glow
-// 0.76 → 0.88 : Campus, Connected.
-// 0.88 → 1.00 : hold before unpin
+// 0.00 → 0.18 : Button fade-out (subhead + chevron stay persistent)
+// 0.22 → 0.44 : SPLIT (left slot ← -1em, right slot → +1em)
+// 0.30 → 0.42 : LEFT stack slide — 스꾸 → 성균관
+// 0.46 → 0.58 : RIGHT stack slide — 버스 → 유니버스 (staggered after left)
+// 0.62 → 0.74 : Accent line
+// 0.72 → 0.82 : SKKUverse subtitle + radial glow
+// 0.82 → 0.92 : Campus, Connected.
+// 0.92 → 1.00 : hold before unpin
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -35,14 +37,22 @@ export default function HeroSection() {
     offset: ["start start", "end end"],
   });
 
-  // Split uses translate (no opacity), so MotionValue path works fine here.
-  const leftX = useTransform(scrollYProgress, [0.22, 0.44], ["0em", "-1em"]);
-  const rightX = useTransform(scrollYProgress, [0.22, 0.44], ["0em", "1em"]);
+  // Split — translate calibrated so the final 성균관·유니버스 gap ≈ 0.25em
+  // (same as the initial 스꾸 버스 space). Assuming Korean bold chars render
+  // at ~0.85em each, ±0.6em split places text edges one space apart.
+  const leftX = useTransform(scrollYProgress, [0.22, 0.44], ["0em", "-0.6em"]);
+  const rightX = useTransform(scrollYProgress, [0.22, 0.44], ["0em", "0.6em"]);
 
   // Refs for direct DOM manipulation (bypass stuck-opacity bug).
-  // Subhead + chevron stay visible through the whole scroll. Only button fades.
   const buttonRef = useRef<HTMLDivElement>(null);
-  const uniRef = useRef<HTMLSpanElement>(null);
+  // Each slot has two absolute rows that slide together (old text exits top,
+  // new text enters from below). Slot width is locked to the OLD text's
+  // intrinsic width via a visibility:hidden spacer, so the initial "스꾸버스"
+  // sits at a tight space-bar gap instead of the wider-text's centered padding.
+  const row1LeftRef = useRef<HTMLSpanElement>(null);
+  const row2LeftRef = useRef<HTMLSpanElement>(null);
+  const row1RightRef = useRef<HTMLSpanElement>(null);
+  const row2RightRef = useRef<HTMLSpanElement>(null);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     // 1) Button fade over [0, 0.18]
@@ -52,31 +62,39 @@ export default function HeroSection() {
       buttonRef.current.style.transform = `translateY(${-heroP * 24}px)`;
     }
 
-    // 2) 유니 reveal over [0.30, 0.48]
-    const uni = uniRef.current;
-    if (uni) {
-      const p = Math.max(0, Math.min(1, (latest - 0.3) / (0.48 - 0.3)));
-      uni.style.opacity = String(p);
-      uni.style.transform = `translateX(-50%) translateY(${(1 - p) * 0.5}em) scale(${0.7 + p * 0.3})`;
+    // 2) LEFT slot slide [0.30, 0.42] — 스꾸 exits top, 성균관 enters from below
+    const leftP = Math.max(0, Math.min(1, (latest - 0.3) / (0.42 - 0.3)));
+    if (row1LeftRef.current) {
+      row1LeftRef.current.style.transform = `translateX(-50%) translateY(${-leftP}em)`;
+    }
+    if (row2LeftRef.current) {
+      row2LeftRef.current.style.transform = `translateX(-50%) translateY(${1 - leftP}em)`;
+    }
+
+    // 3) RIGHT slot slide [0.46, 0.58] — 버스 exits top, 유니버스 enters (staggered)
+    const rightP = Math.max(0, Math.min(1, (latest - 0.46) / (0.58 - 0.46)));
+    if (row1RightRef.current) {
+      row1RightRef.current.style.transform = `translateX(-50%) translateY(${-rightP}em)`;
+    }
+    if (row2RightRef.current) {
+      row2RightRef.current.style.transform = `translateX(-50%) translateY(${1 - rightP}em)`;
     }
   });
 
-  // Splash-phase values — these work through MotionValue path (only non-primary elements;
-  // line/subtitle/tagline opacity stuck would just mean they don't show — tolerable risk,
-  // and user hasn't reported issues with these).
-  const lineWidth = useTransform(scrollYProgress, [0.52, 0.66], ["0%", "60%"]);
-  const lineOpacity = useTransform(scrollYProgress, [0.52, 0.66], [0, 0.35]);
-  const subOpacity = useTransform(scrollYProgress, [0.64, 0.76], [0, 1]);
-  const subY = useTransform(scrollYProgress, [0.64, 0.76], ["20px", "0px"]);
-  const glowScale = useTransform(scrollYProgress, [0.64, 0.84], [0.5, 1]);
-  const tagOpacity = useTransform(scrollYProgress, [0.76, 0.88], [0, 1]);
-  const tagY = useTransform(scrollYProgress, [0.76, 0.88], ["16px", "0px"]);
+  // Splash-phase values (shifted back to leave room for staggered stack slides).
+  const lineWidth = useTransform(scrollYProgress, [0.62, 0.74], ["0%", "60%"]);
+  const lineOpacity = useTransform(scrollYProgress, [0.62, 0.74], [0, 0.35]);
+  const subOpacity = useTransform(scrollYProgress, [0.72, 0.82], [0, 1]);
+  const subY = useTransform(scrollYProgress, [0.72, 0.82], ["20px", "0px"]);
+  const glowScale = useTransform(scrollYProgress, [0.72, 0.92], [0.5, 1]);
+  const tagOpacity = useTransform(scrollYProgress, [0.82, 0.92], [0, 1]);
+  const tagY = useTransform(scrollYProgress, [0.82, 0.92], ["16px", "0px"]);
 
   return (
     <section ref={sectionRef} className="relative h-[130vh] bg-white">
       <div className="sticky top-0 h-screen overflow-hidden">
         <div className="relative z-10 mx-auto max-w-[1140px] px-6 text-center pt-32 md:pt-40 pb-20 h-full flex flex-col items-center">
-          {/* Radial glow — peaks with subtitle */}
+          {/* Radial glow */}
           <motion.div
             aria-hidden
             className="absolute rounded-full pointer-events-none"
@@ -95,29 +113,88 @@ export default function HeroSection() {
 
           {/* Subhead — persistent; placed above the wordmark */}
           <div className="relative z-10 text-[44px] md:text-[80px] lg:text-[104px] font-bold text-grey-900 leading-[1.2] tracking-[-0.03em]">
-            성대생이 만드는 캠퍼스
+            내 손 안에 성균관대
           </div>
 
-          {/* Wordmark row: 스꾸 / 버스 flex items + 유니 absolute overlay */}
-          <div className="relative z-10 inline-flex items-baseline justify-center text-brand text-[44px] md:text-[80px] lg:text-[104px] font-bold leading-[1.2] tracking-[-0.03em]">
-            <motion.span style={{ x: leftX }}>스꾸</motion.span>
-            <motion.span style={{ x: rightX }}>버스</motion.span>
-
-            {/* 유니 — absolute overlay, ref-driven */}
-            <span
-              ref={uniRef}
-              aria-hidden
-              className="absolute left-1/2 top-0 pointer-events-none inline-block"
+          {/* Wordmark row: each slot is inline-block sized to the INITIAL text's
+              intrinsic width via a visibility:hidden spacer. The bigger texts
+              (성균관/유니버스) are absolute children that overflow horizontally
+              (clip-path opens left/right but masks top/bottom). */}
+          <div className="relative z-10 flex items-baseline justify-center gap-[0.25em] text-brand text-[44px] md:text-[80px] lg:text-[104px] font-bold tracking-[-0.03em]">
+            {/* Left slot */}
+            <motion.div
+              className="relative inline-block text-center"
               style={{
-                opacity: 0,
-                transform: "translateX(-50%) translateY(0.5em) scale(0.7)",
+                x: leftX,
+                height: "1em",
+                lineHeight: 1,
+                clipPath: "inset(0 -9999em)",
+                whiteSpace: "nowrap",
               }}
             >
-              유니
-            </span>
+              <span style={{ visibility: "hidden" }}>스꾸</span>
+              <span
+                ref={row1LeftRef}
+                className="absolute top-0"
+                style={{
+                  left: "50%",
+                  transform: "translateX(-50%) translateY(0em)",
+                  willChange: "transform",
+                }}
+              >
+                스꾸
+              </span>
+              <span
+                ref={row2LeftRef}
+                className="absolute top-0"
+                style={{
+                  left: "50%",
+                  transform: "translateX(-50%) translateY(1em)",
+                  willChange: "transform",
+                }}
+              >
+                성균관
+              </span>
+            </motion.div>
+
+            {/* Right slot */}
+            <motion.div
+              className="relative inline-block text-center"
+              style={{
+                x: rightX,
+                height: "1em",
+                lineHeight: 1,
+                clipPath: "inset(0 -9999em)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <span style={{ visibility: "hidden" }}>버스</span>
+              <span
+                ref={row1RightRef}
+                className="absolute top-0"
+                style={{
+                  left: "50%",
+                  transform: "translateX(-50%) translateY(0em)",
+                  willChange: "transform",
+                }}
+              >
+                버스
+              </span>
+              <span
+                ref={row2RightRef}
+                className="absolute top-0"
+                style={{
+                  left: "50%",
+                  transform: "translateX(-50%) translateY(1em)",
+                  willChange: "transform",
+                }}
+              >
+                유니버스
+              </span>
+            </motion.div>
           </div>
 
-          {/* CTA — Hero only, fades alongside subhead */}
+          {/* CTA — fades out */}
           <div
             ref={buttonRef}
             className="relative z-10 mt-12 flex items-center justify-center"
@@ -171,7 +248,7 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Scroll indicator — stays visible through entire pin phase */}
+        {/* Scroll indicator — persistent */}
         <div
           className="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 text-grey-500 z-20 pointer-events-none"
           aria-hidden

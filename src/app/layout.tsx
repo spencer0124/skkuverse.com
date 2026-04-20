@@ -3,13 +3,13 @@ import "./globals.css";
 import InAppEscape from "@/components/ui/InAppEscape";
 
 export const metadata: Metadata = {
-  title: "스꾸버스 - 성대생이 만드는 캠퍼스",
+  title: "스꾸버스: 성균관 유니버스",
   description: "오늘의 공지·셔틀·장소, 성대생이 함께",
   icons: {
     icon: "/logo.svg",
   },
   openGraph: {
-    title: "스꾸버스 - 성대생이 만드는 캠퍼스",
+    title: "스꾸버스: 성균관 유니버스",
     description: "오늘의 공지·셔틀·장소, 성대생이 함께",
     type: "website",
   },
