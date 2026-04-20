@@ -5,6 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/cn";
 
+const navLinks = [
+  { href: "/bus", label: "셔틀버스" },
+  { href: "/notice", label: "AI 공지" },
+  { href: "/feed", label: "피드" },
+  { href: "/team", label: "팀 소개" },
+  { href: "/faq", label: "자주 묻는 질문" },
+];
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -45,19 +53,16 @@ export default function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          <Link
-            href="/#notices"
-            className="text-t6 font-medium text-grey-600 hover:text-grey-900 transition-colors"
-          >
-            공지사항
-          </Link>
-          <Link
-            href="/#faq"
-            className="text-t6 font-medium text-grey-600 hover:text-grey-900 transition-colors"
-          >
-            자주 묻는 질문
-          </Link>
+        <nav className="hidden md:flex items-center gap-6">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-t6 font-medium text-grey-600 hover:text-grey-900 transition-colors"
+            >
+              {link.label}
+            </Link>
+          ))}
           <Link
             href="/#download"
             className="inline-flex items-center justify-center h-7 text-t6 font-medium text-white bg-brand px-5 rounded-full hover:bg-brand/90 transition-colors"
@@ -119,20 +124,16 @@ export default function Header() {
       {menuOpen && (
         <div className="md:hidden border-t border-grey-100 bg-white">
           <nav className="mx-auto max-w-[1140px] px-4 py-2 flex flex-col">
-            <Link
-              href="/#notices"
-              onClick={() => setMenuOpen(false)}
-              className="text-t5 font-medium text-grey-700 py-3 hover:text-grey-900 transition-colors"
-            >
-              공지사항
-            </Link>
-            <Link
-              href="/#faq"
-              onClick={() => setMenuOpen(false)}
-              className="text-t5 font-medium text-grey-700 py-3 hover:text-grey-900 transition-colors"
-            >
-              자주 묻는 질문
-            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="text-t5 font-medium text-grey-700 py-3 hover:text-grey-900 transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
         </div>
       )}
