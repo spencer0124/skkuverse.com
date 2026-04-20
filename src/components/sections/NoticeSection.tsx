@@ -1,19 +1,32 @@
 "use client";
 
+import Image, { type StaticImageData } from "next/image";
 import AnimatedReveal from "@/components/ui/AnimatedReveal";
+import noticeListSummary from "@/assets/images/mockups/notice-list-summary.jpeg";
+import noticeBodySummary from "@/assets/images/mockups/notice-body-summary.jpeg";
 
-const rows = [
+type Row = {
+  icon: string;
+  label: string;
+  title: string;
+  body: string;
+  image?: StaticImageData;
+};
+
+const rows: Row[] = [
   {
     icon: "📌",
     label: "한 줄 요약과 마감일",
     title: "목록만 훑어도\n챙겨야 할 공지가 보여요",
     body: "AI가 모든 공지에 한 줄 요약과 마감일을 달아드려요.\n이제 스크롤할 필요 없어요.",
+    image: noticeListSummary,
   },
   {
     icon: "✨",
     label: "AI 본문 요약",
     title: "길게 읽을 필요 없이,\n핵심만 확인하세요",
     body: "공지를 열면 AI가 본문을 요약해드려요.\n대상, 해야 할 일, 참고사항까지 태그로 정리돼요.",
+    image: noticeBodySummary,
   },
   {
     icon: "🔔",
@@ -61,11 +74,23 @@ export default function NoticeSection() {
               </AnimatedReveal>
 
               <AnimatedReveal delay={0.15}>
-                <div className="mt-10 aspect-[4/3] w-full rounded-3xl bg-white shadow-[0_8px_32px_rgba(0,0,0,0.06)] flex items-center justify-center">
-                  <span className="text-t6 text-grey-400 font-medium">
-                    이미지
-                  </span>
-                </div>
+                {row.image ? (
+                  <div className="mt-10 w-full rounded-3xl bg-white shadow-[0_8px_32px_rgba(0,0,0,0.06)] overflow-hidden">
+                    <Image
+                      src={row.image}
+                      alt={row.label}
+                      className="w-full h-auto"
+                      placeholder="blur"
+                      sizes="(max-width: 720px) 100vw, 720px"
+                    />
+                  </div>
+                ) : (
+                  <div className="mt-10 aspect-[4/3] w-full rounded-3xl bg-white shadow-[0_8px_32px_rgba(0,0,0,0.06)] flex items-center justify-center">
+                    <span className="text-t6 text-grey-400 font-medium">
+                      이미지
+                    </span>
+                  </div>
+                )}
               </AnimatedReveal>
             </div>
           ))}
