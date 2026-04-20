@@ -8,27 +8,19 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import Button from "@/components/ui/Button";
-
-const GREEN_LINE = "color-mix(in srgb, var(--color-brand) 35%, transparent)";
-const GREEN_MUTED = "color-mix(in srgb, var(--color-brand) 8%, transparent)";
-const GREEN_TAGLINE = "color-mix(in srgb, var(--color-brand) 45%, transparent)";
+import HeroScene from "@/components/sections/HeroScene";
 
 // Scroll choreography (scrollYProgress 0..1, over 30vh of pinned scroll in h-[130vh])
 //
 // Wordmark reveal = two side-by-side masked slots. Each slot is overflow:hidden
 // with height 1em and an inner 2-row stack. When the reveal progresses, the stack
 // slides up by 1em — old word (스꾸/버스) exits the top of the slot and new word
-// (성균관/유니버스) slides into place from below. The "white box" masking effect
-// is the slot's own overflow:hidden boundary.
+// (성균관/유니버스) slides into place from below.
 //
-// 0.00 → 0.18 : Button fade-out (subhead + chevron stay persistent)
-// 0.22 → 0.44 : SPLIT (left slot ← -1em, right slot → +1em)
+// 0.22 → 0.44 : SPLIT (left slot ← -0.6em, right slot → +0.6em)
 // 0.30 → 0.42 : LEFT stack slide — 스꾸 → 성균관
 // 0.46 → 0.58 : RIGHT stack slide — 버스 → 유니버스 (staggered after left)
-// 0.62 → 0.74 : Accent line
-// 0.72 → 0.82 : SKKUverse subtitle + radial glow
-// 0.82 → 0.92 : Campus, Connected.
-// 0.92 → 1.00 : hold before unpin
+// CTA + floating emoji scene stay visible the whole time.
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -37,32 +29,16 @@ export default function HeroSection() {
     offset: ["start start", "end end"],
   });
 
-  // Split — translate calibrated so the final 성균관·유니버스 gap ≈ 0.25em
-  // (same as the initial 스꾸 버스 space). Assuming Korean bold chars render
-  // at ~0.85em each, ±0.6em split places text edges one space apart.
   const leftX = useTransform(scrollYProgress, [0.22, 0.44], ["0em", "-0.6em"]);
   const rightX = useTransform(scrollYProgress, [0.22, 0.44], ["0em", "0.6em"]);
 
-  // Refs for direct DOM manipulation (bypass stuck-opacity bug).
-  const buttonRef = useRef<HTMLDivElement>(null);
-  // Each slot has two absolute rows that slide together (old text exits top,
-  // new text enters from below). Slot width is locked to the OLD text's
-  // intrinsic width via a visibility:hidden spacer, so the initial "스꾸버스"
-  // sits at a tight space-bar gap instead of the wider-text's centered padding.
   const row1LeftRef = useRef<HTMLSpanElement>(null);
   const row2LeftRef = useRef<HTMLSpanElement>(null);
   const row1RightRef = useRef<HTMLSpanElement>(null);
   const row2RightRef = useRef<HTMLSpanElement>(null);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // 1) Button fade over [0, 0.18]
-    const heroP = Math.max(0, Math.min(1, latest / 0.18));
-    if (buttonRef.current) {
-      buttonRef.current.style.opacity = String(1 - heroP);
-      buttonRef.current.style.transform = `translateY(${-heroP * 24}px)`;
-    }
-
-    // 2) LEFT slot slide [0.30, 0.42] — 스꾸 exits top, 성균관 enters from below
+    // LEFT slot slide [0.30, 0.42] — 스꾸 exits top, 성균관 enters from below
     const leftP = Math.max(0, Math.min(1, (latest - 0.3) / (0.42 - 0.3)));
     if (row1LeftRef.current) {
       row1LeftRef.current.style.transform = `translateX(-50%) translateY(${-leftP}em)`;
@@ -71,7 +47,7 @@ export default function HeroSection() {
       row2LeftRef.current.style.transform = `translateX(-50%) translateY(${1 - leftP}em)`;
     }
 
-    // 3) RIGHT slot slide [0.46, 0.58] — 버스 exits top, 유니버스 enters (staggered)
+    // RIGHT slot slide [0.46, 0.58] — 버스 exits top, 유니버스 enters (staggered)
     const rightP = Math.max(0, Math.min(1, (latest - 0.46) / (0.58 - 0.46)));
     if (row1RightRef.current) {
       row1RightRef.current.style.transform = `translateX(-50%) translateY(${-rightP}em)`;
@@ -81,36 +57,22 @@ export default function HeroSection() {
     }
   });
 
-  // Splash-phase values (shifted back to leave room for staggered stack slides).
-  const lineWidth = useTransform(scrollYProgress, [0.62, 0.74], ["0%", "60%"]);
-  const lineOpacity = useTransform(scrollYProgress, [0.62, 0.74], [0, 0.35]);
-  const subOpacity = useTransform(scrollYProgress, [0.72, 0.82], [0, 1]);
-  const subY = useTransform(scrollYProgress, [0.72, 0.82], ["20px", "0px"]);
-  const glowScale = useTransform(scrollYProgress, [0.72, 0.92], [0.5, 1]);
-  const tagOpacity = useTransform(scrollYProgress, [0.82, 0.92], [0, 1]);
-  const tagY = useTransform(scrollYProgress, [0.82, 0.92], ["16px", "0px"]);
-
   return (
-    <section ref={sectionRef} className="relative h-[130vh] bg-white">
-      <div className="sticky top-0 h-screen overflow-hidden">
+    <section ref={sectionRef} className="relative h-[130vh]">
+      <div
+        className="sticky top-0 h-screen overflow-hidden"
+        style={{
+          // Subtle brand-green ambient background — top bleeds into white at
+          // the bottom so the section dissolves into the next block.
+          background: `linear-gradient(180deg,
+            color-mix(in srgb, var(--color-brand) 10%, white) 0%,
+            color-mix(in srgb, var(--color-brand) 4%, white) 55%,
+            #ffffff 100%)`,
+        }}
+      >
+        {/* Floating-emoji scene — stays at 100% opacity throughout. */}
+        <HeroScene />
         <div className="relative z-10 mx-auto max-w-[1140px] px-6 text-center pt-32 md:pt-40 pb-20 h-full flex flex-col items-center">
-          {/* Radial glow */}
-          <motion.div
-            aria-hidden
-            className="absolute rounded-full pointer-events-none"
-            style={{
-              top: "50%",
-              left: "50%",
-              translateX: "-50%",
-              translateY: "-50%",
-              width: "min(600px, 80vw)",
-              height: "min(600px, 80vw)",
-              background: `radial-gradient(circle, ${GREEN_MUTED} 0%, transparent 70%)`,
-              opacity: subOpacity,
-              scale: glowScale,
-            }}
-          />
-
           {/* Subhead — persistent; placed above the wordmark */}
           <div className="relative z-10 text-[44px] md:text-[80px] lg:text-[104px] font-bold text-grey-900 leading-[1.2] tracking-[-0.03em]">
             내 손 안에 성균관대
@@ -194,58 +156,12 @@ export default function HeroSection() {
             </motion.div>
           </div>
 
-          {/* CTA — fades out */}
-          <div
-            ref={buttonRef}
-            className="relative z-10 mt-12 flex items-center justify-center"
-            style={{ opacity: 1, transform: "translateY(0px)" }}
-          >
+          {/* CTA — persistent (never fades) */}
+          <div className="relative z-10 mt-12 flex items-center justify-center">
             <Button href="#download" size="lg">
               앱 다운로드
             </Button>
           </div>
-
-          {/* Accent line */}
-          <motion.div
-            aria-hidden
-            className="relative z-10 rounded-[2px] mx-auto mt-8"
-            style={{
-              height: "3px",
-              background: `linear-gradient(90deg, transparent, ${GREEN_LINE}, transparent)`,
-              width: lineWidth,
-              opacity: lineOpacity,
-            }}
-          />
-
-          {/* English subtitle */}
-          <motion.div
-            className="relative z-10 text-center mt-4 uppercase"
-            style={{
-              fontSize: "clamp(0.65rem, 2vw, 0.85rem)",
-              fontWeight: 600,
-              letterSpacing: "0.28em",
-              color: "var(--color-brand)",
-              opacity: subOpacity,
-              y: subY,
-            }}
-          >
-            SKKUverse
-          </motion.div>
-
-          {/* Tagline */}
-          <motion.div
-            className="relative z-10 text-center mt-2"
-            style={{
-              fontSize: "clamp(0.55rem, 1.6vw, 0.72rem)",
-              fontWeight: 400,
-              letterSpacing: "0.06em",
-              color: GREEN_TAGLINE,
-              opacity: tagOpacity,
-              y: tagY,
-            }}
-          >
-            Campus, Connected.
-          </motion.div>
         </div>
 
         {/* Scroll indicator — persistent */}
