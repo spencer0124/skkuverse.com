@@ -4,6 +4,10 @@ import Footer from "@/components/layout/Footer";
 
 type Params = Promise<{ slug: string }>;
 
+export async function generateStaticParams() {
+  return [{ slug: "placeholder" }];
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -11,7 +15,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   return {
-    title: `${decodeURIComponent(slug)} - 피드`,
+    title: decodeURIComponent(slug),
   };
 }
 
