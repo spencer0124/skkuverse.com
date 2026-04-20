@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/sections/HeroSection";
+import NoticeSection from "@/components/sections/NoticeSection";
 import BusSection from "@/components/sections/BusSection";
 import MapSection from "@/components/sections/MapSection";
 import BuildingSection from "@/components/sections/BuildingSection";
@@ -20,6 +21,7 @@ export default function Home() {
       <Header />
       <main>
         <HeroSection />
+        <NoticeSection />
         <BusSection />
         <MapSection />
         <BuildingSection />
