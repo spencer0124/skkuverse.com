@@ -65,7 +65,7 @@ export default function Header() {
           ))}
           <Link
             href="/#download"
-            className="inline-flex items-center justify-center h-7 text-t6 font-medium text-white bg-brand px-5 rounded-full hover:bg-brand/90 transition-colors"
+            className="inline-flex items-center justify-center h-8 text-[11px] font-medium text-white bg-brand px-3 rounded-full hover:bg-brand/90 transition-colors"
           >
             앱 다운로드
           </Link>
@@ -75,7 +75,7 @@ export default function Header() {
         <div className="flex md:hidden items-center gap-2">
           <Link
             href="/#download"
-            className="inline-flex items-center justify-center h-7 text-t7 font-bold text-white bg-brand px-4 rounded-full hover:bg-brand/90 transition-colors"
+            className="inline-flex items-center justify-center h-8 text-[11px] font-bold text-white bg-brand px-3 rounded-full hover:bg-brand/90 transition-colors"
           >
             앱 다운로드
           </Link>
