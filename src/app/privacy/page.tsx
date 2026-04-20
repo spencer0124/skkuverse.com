@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import PrivacyContent from "@/components/privacy/PrivacyContent";
 
 export const metadata: Metadata = {
-  title: "개인정보처리방침 - 스꾸버스",
+  title: "개인정보처리방침",
   description: "스꾸버스 개인정보처리방침",
 };
 

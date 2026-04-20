@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "자주 묻는 질문 - 스꾸버스",
+  title: "자주 묻는 질문",
   description: "스꾸버스 서비스 이용에 대한 자주 묻는 질문.",
 };
 

@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "피드 - 스꾸버스",
+  title: "피드",
   description: "스꾸버스 팀 공지, 개발기, 팀 이야기.",
 };
 

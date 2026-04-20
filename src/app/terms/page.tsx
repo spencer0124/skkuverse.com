@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "이용약관 - 스꾸버스",
+  title: "이용약관",
   description: "스꾸버스 서비스 이용약관.",
 };
 

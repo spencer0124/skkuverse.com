@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "AI 공지 - 스꾸버스",
+  title: "AI 공지",
   description: "성균관대 공지사항을 AI가 요약해 전달합니다.",
   robots: {
     index: false,

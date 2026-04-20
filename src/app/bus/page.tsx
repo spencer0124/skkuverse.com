@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "셔틀버스 - 스꾸버스",
+  title: "셔틀버스",
   description: "성균관대 셔틀버스 실시간 위치, 시간표, 요금 안내.",
 };
 

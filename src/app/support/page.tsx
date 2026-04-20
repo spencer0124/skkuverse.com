@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import AnimatedReveal from "@/components/ui/AnimatedReveal";
 
 export const metadata: Metadata = {
-  title: "문의하기 - 스꾸버스",
+  title: "문의하기",
   description:
     "스꾸버스 서비스에 대한 문의를 카카오톡 또는 이메일로 보내주세요.",
 };

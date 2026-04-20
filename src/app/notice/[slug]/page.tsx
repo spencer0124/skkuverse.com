@@ -11,7 +11,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   return {
-    title: `${decodeURIComponent(slug)} - AI 공지 - 스꾸버스`,
+    title: `${decodeURIComponent(slug)} - AI 공지`,
   };
 }
 
