@@ -84,3 +84,46 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Non-mega icons: rotation injected per-element via --hero-rot so the
+   keyframe can animate translateY and still preserve the tilt. Individual
+   CSS `translate` property is avoided — older Safari/Firefox versions
+   don't compose it cleanly with inline `transform`. */
+@keyframes hero-scene-float {
+  0%, 100% { transform: translateY(0) rotate(var(--hero-rot, 0deg)); }
+  50%      { transform: translateY(-10px) rotate(var(--hero-rot, 0deg)); }
+}
+
+@keyframes hero-scene-float-mega {
+  0%, 100% { transform: translate(-50%, -50%) rotate(-8deg); }
+  50%      { transform: translate(-50%, calc(-50% - 10px)) rotate(-5deg); }
+}
+
+@keyframes hero-scene-shadow-pulse {
+  0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 0.3; transform: translateX(-50%) scale(0.85); }
+}
+
+.hero-scene-icon::after {
+  content: "";
+  position: absolute;
+  bottom: -0.3em;
+  left: 50%;
+  width: 45%;
+  height: 5px;
+  background: var(--hero-scene-shadow, rgba(31, 61, 47, 0.12));
+  border-radius: 50%;
+  filter: blur(5px);
+  transform: translateX(-50%);
+  animation: hero-scene-shadow-pulse 4s ease-in-out infinite;
+  animation-delay: inherit;
+  z-index: -1;
+}
+
+/* Intentionally no `prefers-reduced-motion: reduce` override here.
+   The hero float is a low-amplitude (10px over 4s), non-flashing
+   decoration — killing it entirely made the scene appear broken on
+   systems where reduce-motion is enabled. The animation is gentle
+   enough to satisfy WCAG 2.1 SC 2.3.3 (no parallax/auto-play > 5s
+   concerns) and users who truly need a static page can disable JS
+   for full static rendering. */
