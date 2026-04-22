@@ -5,6 +5,9 @@ interface ButtonProps {
   variant?: "primary" | "secondary";
   size?: "md" | "lg";
   href?: string;
+  onClick?: (
+    e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
+  ) => void;
   className?: string;
 }
 
@@ -13,6 +16,7 @@ export default function Button({
   variant = "primary",
   size = "md",
   href,
+  onClick,
   className,
 }: ButtonProps) {
   const base =
@@ -30,11 +34,15 @@ export default function Button({
 
   if (href) {
     return (
-      <a href={href} className={classes}>
+      <a href={href} onClick={onClick} className={classes}>
         {children}
       </a>
     );
   }
 
-  return <button className={classes}>{children}</button>;
+  return (
+    <button onClick={onClick} className={classes}>
+      {children}
+    </button>
+  );
 }
