@@ -9,6 +9,11 @@ import {
 } from "framer-motion";
 import Button from "@/components/ui/Button";
 import HeroScene from "@/components/sections/HeroScene";
+import {
+  APP_STORE_URL,
+  PLAY_STORE_URL,
+  getMobileStoreUrl,
+} from "@/lib/links";
 
 // Scroll choreography (scrollYProgress 0..1, over 30vh of pinned scroll in h-[130vh])
 //
@@ -158,17 +163,35 @@ export default function HeroSection() {
             </motion.div>
           </div>
 
-          {/* CTA — persistent (never fades) */}
+          {/* CTA — persistent (never fades). Mobile: single smart button that
+              detects iOS vs Android and redirects to the correct store.
+              Desktop: two explicit store buttons since UA sniffing is unreliable. */}
           <div className="relative z-10 mt-12 flex items-center justify-center">
-            <Button href="#download" size="lg">
+            <Button
+              href={PLAY_STORE_URL}
+              size="lg"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = getMobileStoreUrl();
+              }}
+              className="md:hidden"
+            >
               앱 다운로드
             </Button>
+            <div className="hidden md:flex items-center gap-3">
+              <Button href={APP_STORE_URL} size="lg">
+                App Store
+              </Button>
+              <Button href={PLAY_STORE_URL} size="lg" variant="secondary">
+                Google Play
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* Scroll indicator — persistent */}
         <div
-          className="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 text-grey-500 z-20 pointer-events-none"
+          className="absolute bottom-20 md:bottom-10 left-1/2 -translate-x-1/2 text-grey-500 z-20 pointer-events-none"
           aria-hidden
         >
           <motion.div

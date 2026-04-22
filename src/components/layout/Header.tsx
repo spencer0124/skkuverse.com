@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/cn";
+import { PLAY_STORE_URL, getMobileStoreUrl } from "@/lib/links";
 
 const navLinks = [
   { href: "/bus", label: "셔틀버스" },
@@ -63,22 +64,20 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/#download"
-            className="inline-flex items-center justify-center h-8 text-[11px] font-medium text-white bg-brand px-3 rounded-full hover:bg-brand/90 transition-colors"
-          >
-            앱 다운로드
-          </Link>
         </nav>
 
         {/* Mobile actions */}
         <div className="flex md:hidden items-center gap-2">
-          <Link
-            href="/#download"
+          <a
+            href={PLAY_STORE_URL}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = getMobileStoreUrl();
+            }}
             className="inline-flex items-center justify-center h-8 text-[11px] font-bold text-white bg-brand px-3 rounded-full hover:bg-brand/90 transition-colors"
           >
             앱 다운로드
-          </Link>
+          </a>
           <button
             type="button"
             onClick={() => setMenuOpen((v) => !v)}

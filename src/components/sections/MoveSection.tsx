@@ -2,8 +2,6 @@
 
 import Image, { type StaticImageData } from "next/image";
 import AnimatedReveal from "@/components/ui/AnimatedReveal";
-import noticeListSummary from "@/assets/images/mockups/notice-list-summary.jpeg";
-import noticeBodySummary from "@/assets/images/mockups/notice-body-summary.jpeg";
 
 type Row = {
   icon: string;
@@ -15,40 +13,38 @@ type Row = {
 
 const rows: Row[] = [
   {
-    icon: "📌",
-    label: "한 줄 요약과 마감일",
-    title: "목록만 훑어도\n챙겨야 할 공지가 보여요",
-    body: "AI가 모든 공지에 요약과 마감일을 달아드려요.\n이제 스크롤할 필요 없어요.",
-    image: noticeListSummary,
+    icon: "📍",
+    label: "실시간 위치",
+    title: "지금\n어디쯤 와요?",
+    body: "타려는 버스가 어디까지 왔는지 실시간으로 보여드려요.\n정류장에서 막연히 기다리지 않아도 돼요.",
   },
   {
-    icon: "✨",
-    label: "AI 본문 요약",
-    title: "길게 읽을 필요 없이,\n핵심만 확인하세요",
-    body: "공지를 열면 AI가 본문을 요약해드려요.\n대상, 해야 할 일, 참고사항까지 태그로 정리돼요.",
-    image: noticeBodySummary,
+    icon: "🕐",
+    label: "시간표 자동 정렬",
+    title: "다음 차가 뭔지\n알려드려요",
+    body: "지금 시간 기준으로 가장 빨리 오는 차부터 정렬해드려요.\n시간표를 뒤적일 필요 없어요.",
   },
   {
-    icon: "🔔",
-    label: "맞춤 알림",
-    title: "보고 싶은 공지만\n골라서 받아보세요",
-    body: "관심 있는 학과와 카테고리만 선택하면,\n새 공지가 올라올 때마다 알려드려요.",
+    icon: "🆚",
+    label: "한 화면에서 비교",
+    title: "셔틀이 빠를까,\n시내버스가 빠를까",
+    body: "인사캠 셔틀과 종로02·07을 한 화면에 띄워드려요.\n더 빨리 오는 걸 골라 타세요.",
   },
 ];
 
-export default function NoticeSection() {
+export default function MoveSection() {
   return (
-    <section className="py-24 md:py-32 bg-grey-50">
+    <section className="py-24 md:py-32 bg-white">
       <div className="mx-auto max-w-[720px] px-6">
         <div className="text-left">
           <AnimatedReveal>
             <p className="text-[20px] md:text-[28px] font-bold text-brand mb-2">
-              AI 공지
+              이동
             </p>
           </AnimatedReveal>
           <AnimatedReveal delay={0.1}>
             <h2 className="text-[28px] md:text-[42px] font-bold text-grey-900 whitespace-pre-line tracking-tight leading-[1.25]">
-              {"놓칠 일 없이,\n공지는 이미 요약되어 있어요"}
+              {"다음 셔틀,\n어디쯤 왔는지 한눈에"}
             </h2>
           </AnimatedReveal>
         </div>

@@ -2,12 +2,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/sections/HeroSection";
 import NoticeSection from "@/components/sections/NoticeSection";
-import BusSection from "@/components/sections/BusSection";
-import MapSection from "@/components/sections/MapSection";
-import BuildingSection from "@/components/sections/BuildingSection";
-import UtilitySection from "@/components/sections/UtilitySection";
-import BusinessSection from "@/components/sections/BusinessSection";
-import CTASection from "@/components/sections/CTASection";
+import MoveSection from "@/components/sections/MoveSection";
+import CampusMapSection from "@/components/sections/CampusMapSection";
 
 /* ── 추후 확장 예정 섹션 ──
 import HomeSection from "@/components/sections/HomeSection";         // 시간표, 학식
@@ -22,12 +18,8 @@ export default function Home() {
       <main>
         <HeroSection />
         <NoticeSection />
-        <BusSection />
-        <MapSection />
-        <BuildingSection />
-        <UtilitySection />
-        <BusinessSection />
-        <CTASection />
+        <CampusMapSection />
+        <MoveSection />
       </main>
       <Footer />
     </>

@@ -1,10 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 
 const productLinks = [
   { href: "/bus", label: "셔틀버스" },
   { href: "/notice", label: "AI 공지" },
-  { href: "/#download", label: "앱 다운로드" },
 ];
 
 const companyLinks = [
@@ -23,25 +21,9 @@ export default function Footer() {
   return (
     <footer className="bg-grey-100 py-16">
       <div className="mx-auto max-w-[1140px] px-6">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
-          <div className="col-span-2">
-            <div className="flex items-center gap-2 mb-3">
-              <Image
-                src="/logo.svg"
-                alt="스꾸버스 로고"
-                width={28}
-                height={28}
-                className="w-7 h-7 rounded-lg"
-                unoptimized
-              />
-              <h3 className="text-t4 font-bold text-grey-900">스꾸버스</h3>
-            </div>
-            <p className="text-t6 text-grey-500 leading-relaxed">
-              오늘의 공지·셔틀·장소, 성대생이 함께
-            </p>
-          </div>
+        <div className="grid grid-cols-3 gap-6 md:gap-10">
           <div>
-            <h4 className="text-t6 font-bold text-grey-800 mb-4">제품</h4>
+            <h4 className="text-t6 font-bold text-grey-800 mb-4">서비스</h4>
             <ul className="space-y-3">
               {productLinks.map((link) => (
                 <li key={link.href}>
