@@ -197,13 +197,3 @@ export const BUS_FAQ: Array<{ q: string; a: string }> = [
   },
 ];
 
-export const BUS_SOURCES: Array<{ title: string; url: string }> = [
-  {
-    title: "성균관대학교 — 셔틀버스 공식 안내 (대학생활 > 편의/복지)",
-    url: "https://www.skku.edu/skku/campus/support/welfare_12.do",
-  },
-  {
-    title: "성균관대학교 학생성공 게이트웨이 — 셔틀버스",
-    url: "https://ssghakbu.skku.edu/m/menupage.do?menuId=243",
-  },
-];

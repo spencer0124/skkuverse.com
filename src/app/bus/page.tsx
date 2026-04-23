@@ -5,13 +5,8 @@ import Footer from "@/components/layout/Footer";
 import JsonLd from "@/components/seo/JsonLd";
 import BusFaq from "@/components/bus/BusFaq";
 import BusAppCta from "@/components/bus/BusAppCta";
-import {
-  BUS_FAQ,
-  BUS_SOURCES,
-  INJA_ROUTE,
-  INSA_ROUTE,
-} from "@/lib/bus-data";
-import { SITE_NAME, SITE_URL, absoluteUrl } from "@/lib/site";
+import { BUS_FAQ, INJA_ROUTE, INSA_ROUTE } from "@/lib/bus-data";
+import { SITE_URL, absoluteUrl } from "@/lib/site";
 
 const PAGE_PATH = "/bus";
 const PAGE_TITLE = "성균관대 셔틀버스 요금·시간·정류장";
@@ -170,34 +165,13 @@ export default function BusPage() {
           <BusFaq />
         </section>
 
-        {/* Sources footer */}
+        {/* Semester caveat — kept minimal, no external source list or non-official disclaimer */}
         <section
-          aria-labelledby="bus-sources-heading"
+          aria-label="시간표 변경 안내"
           className="mx-auto max-w-[720px] px-6 mt-16 md:mt-24"
         >
-          <h2
-            id="bus-sources-heading"
-            className="text-t6 font-bold text-grey-500 tracking-tight mb-4 uppercase"
-          >
-            참고한 자료
-          </h2>
-          <ul className="flex flex-col gap-2">
-            {BUS_SOURCES.map((s) => (
-              <li key={s.url}>
-                <a
-                  href={s.url}
-                  target="_blank"
-                  rel="noopener external"
-                  className="text-t6 text-grey-600 hover:text-brand transition-colors underline decoration-grey-300 underline-offset-4"
-                >
-                  {s.title} ↗
-                </a>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-6 text-t7 text-grey-400 leading-relaxed">
-            {SITE_NAME}는 성균관대학교의 공식 서비스가 아니에요. 이 페이지는 위
-            공식 자료를 바탕으로 정리했고, 시간표·요금은 학기마다 바뀔 수 있어요.
+          <p className="text-t7 text-grey-400 leading-relaxed">
+            시간표·요금은 학기마다 바뀔 수 있어요.
           </p>
         </section>
       </main>
