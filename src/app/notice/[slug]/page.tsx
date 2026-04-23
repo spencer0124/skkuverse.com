@@ -14,8 +14,17 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const title = decodeURIComponent(slug);
   return {
-    title: decodeURIComponent(slug),
+    title,
+    alternates: { canonical: `/notice/${slug}` },
+    robots: { index: false, follow: true },
+    openGraph: {
+      type: "article",
+      url: `/notice/${slug}`,
+      title,
+    },
+    twitter: { title },
   };
 }
 

@@ -1,0 +1,25 @@
+# 스꾸버스 (skkuverse)
+
+> 성균관대학교 학생을 위한 AI 공지 요약·셔틀버스·캠퍼스 정보 플랫폼. 학생이 직접 만들어 운영하는 비공식 서비스로, 성균관대 공식 자료를 바탕으로 가장 자주 찾는 정보를 정리해 전달합니다.
+
+## Core pages
+
+- [홈](https://skkuverse.com/): 오늘의 공지 요약, 셔틀버스, 캠퍼스 이동 정보 한눈에 보기
+- [셔틀버스](https://skkuverse.com/bus): 성균관대 셔틀버스 허브 — 두 노선 요약 + FAQ + 앱 안내
+- [인사캠 셔틀버스](https://skkuverse.com/bus/insa): 혜화역↔인사캠 셔틀 (편도 400원, 월~금). 시간·결제수단·정류장·연락처
+- [인자셔틀](https://skkuverse.com/bus/inja): 인사캠↔자과캠(수원) 무료 셔틀 (매주 금요일). 탑승장소·분실물 연락처
+- [자주 묻는 질문](https://skkuverse.com/faq): 스꾸버스 서비스 이용에 관해 가장 많이 묻는 질문
+- [팀 소개](https://skkuverse.com/team): 스꾸버스를 만드는 사람들
+- [문의하기](https://skkuverse.com/support): 카카오톡 채널·이메일 문의 안내
+
+## Policies
+
+- [이용약관](https://skkuverse.com/terms)
+- [개인정보처리방침](https://skkuverse.com/privacy)
+
+## About
+
+- 서비스 성격: 비영리, 학생 운영
+- 공식 여부: 성균관대학교의 공식 서비스가 **아님** — 공식 정보는 [성균관대 공식 사이트](https://www.skku.edu) 참고
+- 연락처: zoyoong124@gmail.com
+- 앱: [App Store](https://apps.apple.com/kr/app/skku-bus/id6446813434) · [Google Play](https://play.google.com/store/apps/details?id=com.zoyoong.skkubus)
