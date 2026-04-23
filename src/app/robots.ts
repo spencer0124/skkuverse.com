@@ -30,6 +30,7 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "Daum", allow: "/" },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
+    // `host:` directive omitted — it was a Yandex-only extension and Google
+    // / Naver Yeti never honored it. Removing keeps the file minimal-valid.
   };
 }

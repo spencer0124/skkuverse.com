@@ -18,6 +18,9 @@ export async function generateMetadata({
   return {
     title,
     alternates: { canonical: `/feed/${slug}` },
+    // Matches /feed index — noindex until real blog posts replace the
+    // placeholder `generateStaticParams` shape.
+    robots: { index: false, follow: true },
     openGraph: {
       type: "article",
       url: `/feed/${slug}`,

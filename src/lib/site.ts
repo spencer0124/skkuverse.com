@@ -53,44 +53,101 @@ export type SitePage = {
     | "yearly"
     | "never";
   priority: number;
-  // When false, page opts out of sitemap/robots indexing.
+  // When false, page opts out of sitemap inclusion. Must stay in sync with
+  // the page file's `robots: { index: false }` meta — source of truth for
+  // search engines is the meta tag; this field documents intent here.
   indexable: boolean;
+  // Repo-relative path used by sitemap.ts to derive per-page lastmod from
+  // `git log -1`. Shared components aren't tracked — last page-file commit
+  // is a good-enough proxy. Omitted → build time date is used as fallback.
+  sourceFile?: string;
 };
 
-// Central enumeration of public routes. Sitemap + llms.txt both read from this.
-// Dynamic slugs (/notice/[slug], /feed/[slug]) are intentionally excluded —
-// their `robots: { index: false }` status applies to the index too.
+// Central enumeration of public routes (including intentionally noindex'd
+// ones — kept in this list for documentation so future contributors can see
+// the full inventory, not a silent omission). The sitemap generator filters
+// by `indexable === true`.
 export const SITE_PAGES: SitePage[] = [
-  { path: "/", changeFrequency: "weekly", priority: 1.0, indexable: true },
-  { path: "/bus", changeFrequency: "monthly", priority: 0.9, indexable: true },
+  {
+    path: "/",
+    changeFrequency: "weekly",
+    priority: 1.0,
+    indexable: true,
+    sourceFile: "src/app/page.tsx",
+  },
+  {
+    path: "/bus",
+    changeFrequency: "monthly",
+    priority: 0.9,
+    indexable: true,
+    sourceFile: "src/app/bus/page.tsx",
+  },
   {
     path: "/bus/insa",
     changeFrequency: "monthly",
     priority: 0.9,
     indexable: true,
+    sourceFile: "src/app/bus/insa/page.tsx",
   },
   {
     path: "/bus/inja",
     changeFrequency: "monthly",
     priority: 0.9,
     indexable: true,
+    sourceFile: "src/app/bus/inja/page.tsx",
   },
-  { path: "/team", changeFrequency: "monthly", priority: 0.6, indexable: true },
-  { path: "/faq", changeFrequency: "monthly", priority: 0.6, indexable: true },
+  {
+    path: "/team",
+    changeFrequency: "monthly",
+    priority: 0.6,
+    indexable: true,
+    sourceFile: "src/app/team/page.tsx",
+  },
+  {
+    path: "/faq",
+    changeFrequency: "monthly",
+    priority: 0.6,
+    indexable: true,
+    sourceFile: "src/app/faq/page.tsx",
+  },
   {
     path: "/support",
     changeFrequency: "yearly",
     priority: 0.4,
     indexable: true,
+    sourceFile: "src/app/support/page.tsx",
   },
   {
     path: "/privacy",
     changeFrequency: "yearly",
     priority: 0.3,
     indexable: true,
+    sourceFile: "src/app/privacy/page.tsx",
   },
-  { path: "/terms", changeFrequency: "yearly", priority: 0.3, indexable: true },
-  // /notice and /feed are robots:noindex — excluded from sitemap.
+  {
+    path: "/terms",
+    changeFrequency: "yearly",
+    priority: 0.3,
+    indexable: true,
+    sourceFile: "src/app/terms/page.tsx",
+  },
+  // Placeholder routes: indexable:false keeps them out of sitemap; the page
+  // files themselves carry `robots: { index: false }` meta. Flip both fields
+  // together once real content ships.
+  {
+    path: "/notice",
+    changeFrequency: "weekly",
+    priority: 0.3,
+    indexable: false,
+    sourceFile: "src/app/notice/page.tsx",
+  },
+  {
+    path: "/feed",
+    changeFrequency: "weekly",
+    priority: 0.3,
+    indexable: false,
+    sourceFile: "src/app/feed/page.tsx",
+  },
 ];
 
 // Build an absolute URL from a path (handles leading slash).
