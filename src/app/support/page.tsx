@@ -3,10 +3,20 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AnimatedReveal from "@/components/ui/AnimatedReveal";
 
+const DESC =
+  "스꾸버스 서비스에 대한 문의는 카카오톡 채널 또는 이메일로 편하게 보내주세요.";
+
 export const metadata: Metadata = {
   title: "문의하기",
-  description:
-    "스꾸버스 서비스에 대한 문의를 카카오톡 또는 이메일로 보내주세요.",
+  description: DESC,
+  alternates: { canonical: "/support" },
+  openGraph: {
+    type: "website",
+    url: "/support",
+    title: "문의하기",
+    description: DESC,
+  },
+  twitter: { title: "문의하기", description: DESC },
 };
 
 export default function SupportPage() {

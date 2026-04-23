@@ -2,9 +2,19 @@ import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
+const DESC = "스꾸버스를 만드는 사람들, 그리고 우리가 믿고 일하는 방식.";
+
 export const metadata: Metadata = {
   title: "팀 소개",
-  description: "스꾸버스를 만드는 사람들.",
+  description: DESC,
+  alternates: { canonical: "/team" },
+  openGraph: {
+    type: "profile",
+    url: "/team",
+    title: "팀 소개",
+    description: DESC,
+  },
+  twitter: { title: "팀 소개", description: DESC },
 };
 
 export default function TeamPage() {

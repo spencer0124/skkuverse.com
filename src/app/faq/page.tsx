@@ -2,9 +2,20 @@ import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
+const DESC =
+  "스꾸버스 서비스 이용에 대해 가장 많이 묻는 질문과 답변을 모았습니다.";
+
 export const metadata: Metadata = {
   title: "자주 묻는 질문",
-  description: "스꾸버스 서비스 이용에 대한 자주 묻는 질문.",
+  description: DESC,
+  alternates: { canonical: "/faq" },
+  openGraph: {
+    type: "website",
+    url: "/faq",
+    title: "자주 묻는 질문",
+    description: DESC,
+  },
+  twitter: { title: "자주 묻는 질문", description: DESC },
 };
 
 export default function FaqPage() {

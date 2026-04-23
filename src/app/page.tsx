@@ -1,9 +1,18 @@
+import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/sections/HeroSection";
 import NoticeSection from "@/components/sections/NoticeSection";
 import MoveSection from "@/components/sections/MoveSection";
 import CampusMapSection from "@/components/sections/CampusMapSection";
+import { SITE_URL } from "@/lib/site";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    url: SITE_URL,
+  },
+};
 
 /* ── 추후 확장 예정 섹션 ──
 import HomeSection from "@/components/sections/HomeSection";         // 시간표, 학식

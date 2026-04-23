@@ -1,27 +1,145 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import InAppEscape from "@/components/ui/InAppEscape";
+import JsonLd from "@/components/seo/JsonLd";
+import {
+  APP_STORE_ID,
+  APP_STORE_URL,
+  BRAND_BG,
+  BRAND_COLOR,
+  DEFAULT_OG_IMAGE,
+  PLAY_STORE_URL,
+  SITE_DEFAULT_TITLE,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_LOCALE,
+  SITE_NAME,
+  SITE_SHORT_DESCRIPTION,
+  SITE_URL,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "스꾸버스 | 성균관 유니버스",
-    template: "%s | 스꾸버스",
+    default: SITE_DEFAULT_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: "오늘의 공지·셔틀·장소, 성대생이 함께",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: SITE_KEYWORDS,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "education",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   icons: {
     icon: "/logo.svg",
+    apple: "/apple-icon.png",
   },
   openGraph: {
-    title: {
-      default: "스꾸버스 | 성균관 유니버스",
-      template: "%s | 스꾸버스",
-    },
-    description: "오늘의 공지·셔틀·장소, 성대생이 함께",
     type: "website",
+    locale: SITE_LOCALE,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: {
+      default: SITE_DEFAULT_TITLE,
+      template: `%s | ${SITE_NAME}`,
+    },
+    description: SITE_SHORT_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
   },
-  other: {
-    "apple-itunes-app":
-      "app-id=6446813434, app-argument=https://skkuverse.com",
+  twitter: {
+    card: "summary_large_image",
+    title: {
+      default: SITE_DEFAULT_TITLE,
+      template: `%s | ${SITE_NAME}`,
+    },
+    description: SITE_SHORT_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE.url],
+  },
+  itunes: {
+    appId: APP_STORE_ID,
+    appArgument: SITE_URL,
+  },
+  appleWebApp: {
+    title: SITE_NAME,
+    capable: true,
+    statusBarStyle: "default",
+  },
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false,
+  },
+  // Verification tokens. Fill once after first deploy and site registration:
+  //   Google Search Console → https://search.google.com/search-console
+  //   Naver Search Advisor  → https://searchadvisor.naver.com
+  // Leaving empty strings produces no-op meta tags; swap to real codes when issued.
+  verification: {
+    google: undefined,
+    other: {
+      "naver-site-verification": [],
+    },
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: BRAND_COLOR,
+  colorScheme: "light",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
+// Organization + WebSite JSON-LD. Emitted once on every page via the root
+// layout so generative AI crawlers can identify the entity behind the site
+// without per-page duplication.
+const organizationJsonLd = {
+  "@type": "Organization",
+  name: SITE_NAME,
+  alternateName: ["skkuverse", "스꾸버스"],
+  url: SITE_URL,
+  logo: `${SITE_URL}/logo.svg`,
+  description: SITE_DESCRIPTION,
+  sameAs: [APP_STORE_URL, PLAY_STORE_URL],
+  knowsAbout: [
+    "성균관대학교",
+    "성균관대 셔틀버스",
+    "인사캠 셔틀버스",
+    "인자셔틀",
+    "인사캠",
+    "자과캠",
+    "인문사회과학캠퍼스",
+    "자연과학캠퍼스",
+    "성균관대 공지사항",
+  ],
+};
+
+const websiteJsonLd = {
+  "@type": "WebSite",
+  name: SITE_NAME,
+  alternateName: "skkuverse",
+  url: SITE_URL,
+  inLanguage: "ko-KR",
+  description: SITE_DESCRIPTION,
+  publisher: {
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
   },
 };
 
@@ -42,8 +160,13 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/toss/tossface/dist/tossface.css"
         />
+        <JsonLd id="ld-organization" data={organizationJsonLd} />
+        <JsonLd id="ld-website" data={websiteJsonLd} />
       </head>
-      <body className="min-h-full flex flex-col font-sans">
+      <body
+        className="min-h-full flex flex-col font-sans"
+        style={{ background: BRAND_BG }}
+      >
         <InAppEscape />
         {children}
       </body>
