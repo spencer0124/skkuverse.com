@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import TermsContent from "@/components/terms/TermsContent";
 
-const DESC = "스꾸버스 서비스 이용 시 적용되는 약관 안내.";
+const DESC =
+  "스꾸버스 서비스 이용약관. 서비스 성격, 정보 제공의 한계, 책임한계와 법적고지 등 이용자가 알아야 할 사항을 정리했습니다.";
 
 export const metadata: Metadata = {
   title: "이용약관",
@@ -23,7 +25,10 @@ export default function TermsPage() {
       <Header />
       <main className="pt-32 pb-24">
         <div className="mx-auto max-w-[800px] px-6">
-          <h1 className="text-display font-bold text-grey-900">이용약관</h1>
+          <h1 className="text-display font-bold text-grey-900 mb-10">
+            이용약관
+          </h1>
+          <TermsContent />
         </div>
       </main>
       <Footer />

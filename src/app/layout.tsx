@@ -85,14 +85,15 @@ export const metadata: Metadata = {
     email: false,
     address: false,
   },
-  // Verification tokens. Fill once after first deploy and site registration:
+  // Verification tokens.
   //   Google Search Console → https://search.google.com/search-console
+  //     (fill `google` once Google issues a token)
   //   Naver Search Advisor  → https://searchadvisor.naver.com
-  // Leaving empty strings produces no-op meta tags; swap to real codes when issued.
+  //     (token issued 2026-04-23 via HTML 메타 태그 방식)
   verification: {
     google: undefined,
     other: {
-      "naver-site-verification": [],
+      "naver-site-verification": "7ba547d44d63d1f9b592b346a630acb5c930d122",
     },
   },
 };
