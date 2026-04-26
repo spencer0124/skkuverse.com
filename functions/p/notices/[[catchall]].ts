@@ -103,7 +103,19 @@ export const onRequest: PagesFunction<Env> = async (ctx) => {
 
   // ── 3. Cache-first lookup ────────────────────────────────────────
   const cached = await cache.match(cacheKey);
-  if (cached) return cached;
+  if (cached) {
+    // Diagnostic header to verify Cache API is actually serving stored
+    // responses (cf-cache-status alone is unreliable for Workers Cache API).
+    // Headers are reconstructed because Response.headers from cache.match
+    // is immutable.
+    const h = new Headers(cached.headers);
+    h.set('X-Cache', 'HIT');
+    return new Response(cached.body, {
+      status: cached.status,
+      statusText: cached.statusText,
+      headers: h,
+    });
+  }
 
   // ── 4. API fetch with timeout ────────────────────────────────────
   const apiBase = env.API_BASE ?? DEFAULT_API_BASE;
@@ -152,9 +164,22 @@ export const onRequest: PagesFunction<Env> = async (ctx) => {
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
       'Cache-Control': 'public, max-age=300, s-maxage=3600',
+      'X-Cache': 'MISS',
     },
   });
-  waitUntil(cache.put(cacheKey, response.clone()));
+  // Background cache write — cache.put may silently reject responses for
+  // edge-environment-specific reasons (request-level cf headers, body type
+  // mismatch). Wrap so we can log + capture without aborting the user's
+  // response.
+  waitUntil(
+    (async () => {
+      try {
+        await cache.put(cacheKey, response.clone());
+      } catch (e) {
+        console.error('cache.put failed', e instanceof Error ? e.message : String(e));
+      }
+    })(),
+  );
   return response;
 };
 
