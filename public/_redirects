@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects.
+# Pages Functions take precedence over static + _redirects for matching paths,
+# so this rule only fires when no Function matches — i.e., archeological
+# /p/notice/* (singular, deprecated) URLs from before the AASA path migration.
+/p/notice/* /p/notices/:splat 301
