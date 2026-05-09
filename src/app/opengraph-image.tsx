@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { BRAND_COLOR, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
 
 // Required with next.config.ts `output: "export"`: opts this Route Handler
@@ -10,14 +12,10 @@ export const alt = `${SITE_NAME} — ${SITE_TAGLINE}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Intentionally Latin-only: Satori (the engine behind ImageResponse) hits
-// "lookupType: 6 / substFormat: 1 is not yet supported" when it tries to
-// shape Korean text through Wanted Sans OTF. Rather than ship a broken
-// build, we render an English-word OG card with brand colors. To re-enable
-// a bilingual card later, either (a) drop in a designed static
-// src/app/opengraph-image.png (file convention accepts any image file),
-// or (b) load a Satori-compatible Korean TTF like Noto Sans KR via readFile.
 export default function Image() {
+  const iconBuffer = readFileSync(join(process.cwd(), "public/logo.png"));
+  const iconDataUrl = `data:image/png;base64,${iconBuffer.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -25,78 +23,13 @@ export default function Image() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
+          alignItems: "center",
+          justifyContent: "center",
           background: BRAND_COLOR,
-          padding: "80px",
-          color: "#ffffff",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "14px",
-            fontSize: 32,
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-          }}
-        >
-          <div
-            style={{
-              width: 48,
-              height: 48,
-              borderRadius: 12,
-              background: "#E9EDEA",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: BRAND_COLOR,
-              fontSize: 26,
-              fontWeight: 700,
-            }}
-          >
-            S
-          </div>
-          skkuverse
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          <div
-            style={{
-              fontSize: 104,
-              fontWeight: 700,
-              lineHeight: 1.05,
-              letterSpacing: "-0.04em",
-            }}
-          >
-            skkuverse
-          </div>
-          <div
-            style={{
-              fontSize: 36,
-              fontWeight: 400,
-              lineHeight: 1.3,
-              color: "#E9EDEA",
-              opacity: 0.9,
-            }}
-          >
-            SKKU bus · notices · campus — for students, by students
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            fontSize: 24,
-            opacity: 0.7,
-          }}
-        >
-          skkuverse.com
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={iconDataUrl} width={420} height={420} alt="" />
       </div>
     ),
     { ...size }

@@ -47,8 +47,8 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/logo.svg",
-    apple: "/apple-icon.png",
+    icon: "/logo.png",
+    apple: "/logo.png",
   },
   openGraph: {
     type: "website",
@@ -114,7 +114,7 @@ const organizationJsonLd = {
   name: SITE_NAME,
   alternateName: ["skkuverse", "스꾸버스"],
   url: SITE_URL,
-  logo: `${SITE_URL}/logo.svg`,
+  logo: `${SITE_URL}/logo.png`,
   description: SITE_DESCRIPTION,
   sameAs: [APP_STORE_URL, PLAY_STORE_URL],
   knowsAbout: [

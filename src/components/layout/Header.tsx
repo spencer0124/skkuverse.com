@@ -42,7 +42,7 @@ export default function Header() {
           onClick={() => setMenuOpen(false)}
         >
           <Image
-            src="/logo.svg"
+            src="/logo.png"
             alt="스꾸버스 로고"
             width={28}
             height={28}

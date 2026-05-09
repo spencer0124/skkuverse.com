@@ -529,7 +529,7 @@ function headMeta(opts: {
   appStoreId: string | undefined;
 }): string {
   const { title, description, canonical, appStoreId } = opts;
-  const ogImage = 'https://skkuverse.com/logo.svg';
+  const ogImage = 'https://skkuverse.com/logo.png';
   const smartBanner = appStoreId
     ? `<meta name="apple-itunes-app" content="app-id=${escapeAttr(appStoreId)}, app-argument=${escapeAttr(canonical)}">`
     : '';

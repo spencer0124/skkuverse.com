@@ -46,7 +46,7 @@ export default function TransitLandingPage() {
           className="inline-flex items-center gap-2"
         >
           <Image
-            src="/logo.svg"
+            src="/logo.png"
             alt={`${SITE_NAME} 로고`}
             width={28}
             height={28}

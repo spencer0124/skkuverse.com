@@ -97,7 +97,7 @@ export default function InAppEscape() {
   return (
     <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center px-8">
       <Image
-        src="/logo.svg"
+        src="/logo.png"
         alt="스꾸버스 로고"
         width={64}
         height={64}
