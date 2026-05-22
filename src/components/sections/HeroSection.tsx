@@ -82,7 +82,7 @@ export default function HeroSection() {
         <div className="relative z-10 mx-auto max-w-[1140px] px-6 text-center pt-40 md:pt-52 pb-20 h-full flex flex-col items-center">
           {/* Subhead — persistent; placed above the wordmark */}
           <div className="relative z-10 text-[44px] md:text-[80px] lg:text-[104px] font-bold text-grey-900 leading-[1.2] tracking-[-0.03em]">
-            내 손 안에, 성균관대
+            내 손안의, 성균관대
           </div>
 
           {/* Wordmark row: each slot is inline-block sized to the INITIAL text's

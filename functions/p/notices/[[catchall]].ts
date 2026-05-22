@@ -551,8 +551,8 @@ ${smartBanner}`;
  * In-app browser escape — mirrors the homepage's React `InAppEscape`
  * component (`src/components/ui/InAppEscape.tsx`) but inlined as vanilla JS
  * so it works on Pages Function HTML which never goes through Next.js
- * rendering. Same UA regex + same 4-way branch (kakao / line / android /
- * manual-ios). Idle path is a no-op (overlay stays hidden, no flash).
+ * rendering. Silently attempts a redirect for Kakao / Line / Android; renders
+ * no UI, so iOS in-app and any failed attempt fall through to the page itself.
  *
  * Why escape: KakaoTalk/Instagram/Naver in-app webviews break universal
  * links (app-installed users would land in the webview instead of the
@@ -560,39 +560,15 @@ ${smartBanner}`;
  * browser restores parity with the homepage and the rest of the share UX.
  */
 function inAppEscapeScript(): string {
-  return `<div id="iae-overlay" hidden></div>
-<script>
+  return `<script>
 (function () {
   var INAPP = /KAKAOTALK|kakaotalk|line\\/|NAVER\\(inapp|snapchat|instagram|everytimeapp|whatsApp|wadiz|FB_IAB|FB4A|FBAN|FBIOS|FBSS|DaumApps|kakaostory|band|twitter|TikTok/i;
   var ua = navigator.userAgent;
   if (!INAPP.test(ua)) return;
   var isIOS = /iPhone|iPad|iPod/.test(ua);
   var url = location.href;
-  var overlay = document.getElementById('iae-overlay');
-  if (!overlay) return;
-
-  function showLoading() {
-    overlay.innerHTML = '<div class="iae-card"><div class="iae-spin"></div><p class="iae-msg">브라우저로 이동 중...</p></div>';
-    overlay.removeAttribute('hidden');
-  }
-  function showManualIOS() {
-    overlay.innerHTML =
-      '<div class="iae-manual">' +
-        '<h2>Safari에서 열어주세요</h2>' +
-        '<p class="iae-sub">이 앱의 브라우저에서는 일부 기능이<br>제한될 수 있어요.</p>' +
-        '<div class="iae-steps">' +
-          '<div class="iae-step"><span class="iae-num">1</span><p>주소가 <strong>복사되었어요</strong></p></div>' +
-          '<div class="iae-step"><span class="iae-num">2</span><p><strong>Safari</strong>를 열고 주소창을 길게 터치한 뒤<br><strong>붙여놓기 및 이동</strong>을 눌러주세요</p></div>' +
-        '</div>' +
-        '<button class="iae-btn" type="button">Safari 열기</button>' +
-      '</div>';
-    overlay.removeAttribute('hidden');
-    var btn = overlay.querySelector('.iae-btn');
-    if (btn) btn.addEventListener('click', function () { location.href = 'x-web-search://?'; });
-  }
 
   if (/KAKAOTALK|kakaotalk/i.test(ua)) {
-    showLoading();
     location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(url);
     setTimeout(function () {
       location.href = isIOS ? 'kakaoweb://closeBrowser' : 'kakaotalk://inappbrowser/close';
@@ -600,33 +576,12 @@ function inAppEscapeScript(): string {
     return;
   }
   if (/line\\//i.test(ua)) {
-    showLoading();
     location.href = url + (url.indexOf('?') > -1 ? '&' : '?') + 'openExternalBrowser=1';
     return;
   }
   if (/Android/i.test(ua)) {
-    showLoading();
     var path = url.replace(/^https?:\\/\\//i, '');
     location.href = 'intent://' + path + '#Intent;scheme=https;end';
-    return;
-  }
-  if (isIOS) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).catch(function () {});
-    } else {
-      try {
-        var ta = document.createElement('textarea');
-        ta.value = url;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-      } catch (e) {}
-    }
-    showManualIOS();
-    return;
   }
 })();
 </script>`;
@@ -714,25 +669,6 @@ body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Apple SD Goth
 .hero h1 { margin: 4px 0 8px; font-size: 24px; font-weight: 700; line-height: 1.4; word-break: keep-all; }
 .meta { color: var(--grey500); font-size: 14px; }
 .meta .dot { color: var(--grey400); margin: 0 2px; }
-
-/* In-app browser escape overlay (mirrors src/components/ui/InAppEscape.tsx). */
-#iae-overlay { position: fixed; inset: 0; z-index: 9999; background: #fff; display: flex; align-items: center; justify-content: center; padding: 32px 24px; }
-#iae-overlay[hidden] { display: none; }
-.iae-card { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.iae-spin { width: 40px; height: 40px; border: 3px solid var(--accent); border-top-color: transparent; border-radius: 50%; animation: iae-spin 1s linear infinite; }
-@keyframes iae-spin { to { transform: rotate(360deg); } }
-.iae-msg { font-size: 15px; font-weight: 500; color: var(--grey700); margin: 0; }
-.iae-manual { width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; }
-.iae-manual h2 { font-size: 22px; font-weight: 700; color: var(--grey900); text-align: center; margin: 24px 0 12px; }
-.iae-sub { font-size: 14px; color: var(--grey500); text-align: center; line-height: 1.6; margin: 0 0 32px; }
-.iae-steps { background: var(--grey50); border-radius: 16px; padding: 20px; width: 100%; }
-.iae-step { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
-.iae-step:last-child { margin-bottom: 0; }
-.iae-step .iae-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; }
-.iae-step p { margin: 0; padding-top: 2px; font-size: 14px; color: var(--grey700); line-height: 1.55; }
-.iae-step strong { font-weight: 700; color: var(--accent); }
-.iae-step:nth-child(2) strong { color: var(--grey900); }
-.iae-btn { width: 100%; max-width: 360px; margin-top: 16px; padding: 16px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 700; border: 0; border-radius: 16px; cursor: pointer; }
 
 .ai-summary { background: var(--grey50); border-radius: 10px; padding: 14px; margin: 12px 0 8px; }
 .ai-summary .ai-header { display: flex; align-items: center; gap: 6px; color: var(--grey600); font-size: 13px; font-weight: 600; margin-bottom: 6px; }
