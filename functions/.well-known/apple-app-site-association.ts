@@ -20,6 +20,7 @@ export const onRequest: PagesFunction<Env> = async ({ env }) => {
             "/p/map/*",
             "/p/search",
             "/p/notices/*",
+            "/p/m/*",
           ],
         },
       ],
