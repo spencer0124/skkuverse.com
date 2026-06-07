@@ -27,7 +27,7 @@ export const onRequest: PagesFunction = async ({ params }) => {
 
 function page(id: string): string {
   const openBtn = id
-    ? `<a class="cta" href="skkuverse://m/${escapeAttr(id)}">스꾸버스 앱에서 열기</a>`
+    ? `<a class="cta" href="skkuverse:///m/${escapeAttr(id)}">스꾸버스 앱에서 열기</a>`
     : '';
   return `<!DOCTYPE html>
 <html lang="ko">
