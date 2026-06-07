@@ -6,7 +6,7 @@
  * lands in Safari (not back in the app). Behavior:
  *   - In Safari (normal tab): show "공유 > 홈 화면에 추가" instructions. The icon/title
  *     come from the query, so the home-screen shortcut shows the mini-app's logo/name.
- *   - Standalone (home-icon launch): redirect to `skkuverse://m/<id>` (custom scheme always
+ *   - Standalone (home-icon launch): redirect to `skkuverse:///m/<id>` (custom scheme always
  *     opens the app if installed) with a store fallback. This avoids relying on the
  *     unverified "standalone auto-fires the universal link" behavior.
  */
@@ -83,7 +83,7 @@ li::before{content:counter(s);color:var(--blue);font-weight:800;font-size:18px;m
   <p class="note">홈 화면 아이콘을 누르면 스꾸버스 앱에서 ${escapeHtml(title)}가 바로 열려요.</p>
 
   <div class="fallback" id="fb">
-    <a href="skkuverse://m/${escapeAttr(id)}">스꾸버스 앱에서 열기</a>
+    <a href="skkuverse:///m/${escapeAttr(id)}">스꾸버스 앱에서 열기</a>
     <a class="store" href="${APP_STORE_URL}">App Store에서 받기</a>
     <a class="store" href="${PLAY_STORE_URL}">Google Play에서 받기</a>
   </div>
@@ -100,7 +100,7 @@ li::before{content:counter(s);color:var(--blue);font-weight:800;font-size:18px;m
     // once the app takes over.
     var fb=setTimeout(function(){location.href=store;},1500);
     window.addEventListener('pagehide',function(){clearTimeout(fb);});
-    location.href='skkuverse://m/'+id;
+    location.href='skkuverse:///m/'+id;
   } else if(!id){
     // No/invalid slug → just offer the store + manual open.
     document.getElementById('fb').style.display='block';
